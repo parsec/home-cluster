@@ -1,0 +1,14 @@
+---
+kubernetes:
+  children:
+    master:
+      hosts:
+        venat:
+          ansible_user: parsec
+          ansible_host: 10.1.0.4
+        emet-selch:
+          ansible_user: parsec
+          ansible_host: 10.1.0.5
+        hythlodaeus:
+          ansible_user: parsec
+          ansible_host: 10.1.0.6
