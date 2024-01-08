@@ -39,6 +39,7 @@ spec:
         matchNames:
           - default
           - observability
+          - rook-ceph
     ingress:
       main:
         enabled: true
