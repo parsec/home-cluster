@@ -127,7 +127,7 @@ spec:
         globalMounts:
           - path: /media
             readOnly: true
-      config_transfer:
+      config-transfer:
         type: nfs
         server: 10.1.0.3
         path: /mnt/Data/vault
