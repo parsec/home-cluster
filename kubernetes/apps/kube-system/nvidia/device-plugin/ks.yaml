@@ -13,4 +13,4 @@ spec:
     name: home-cluster
   wait: true
   dependsOn:
-    - name: cluster-apps-node-feature-discovery
+    - name: node-feature-discovery
