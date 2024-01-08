@@ -23,3 +23,6 @@ resources:
   - ./stakater.yaml
   - ./weave-gitops.yaml
   - ./node-feature-discovery.yaml
+  - ./nvidia-device-plugin.yaml
+  - ./nvidia-dcgm.yaml
+  - ./nvidia-operator.yaml
