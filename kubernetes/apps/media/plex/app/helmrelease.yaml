@@ -60,7 +60,7 @@ spec:
               startup:
                 enabled: false
             securityContext:
-              allowPrivilegeEscalation: false
+              # allowPrivilegeEscalation: false
               # readOnlyRootFilesystem: true
               # capabilities: { drop: ["ALL"] }
             resources:
