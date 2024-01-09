@@ -44,6 +44,7 @@ spec:
               TZ: America/New_York
               NVIDIA_DRIVER_CAPABILITIES: all
               NVIDIA_VISIBLE_DEVICES: all
+              ALLOWED_NETWORKS: "10.1.0.0/255.255.255.0,10.5.0.0/255.255.255.0"
             probes:
               liveness: &probes
                 enabled: true
