@@ -6,7 +6,7 @@ resources:
   - ./sonarr/ks.yaml
   # - radarr
   - ./sabnzbd/ks.yaml
-  # - prowlarr
+  - ./prowlarr/ks.yaml
   - ./tautulli/ks.yaml
   # - overseerr
   - ./plex/ks.yaml
