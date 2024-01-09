@@ -7,6 +7,6 @@ resources:
   # - radarr
   # - sabnzbd
   # - prowlarr
-  # - tautulli
+  - ./tautulli/ks.yaml
   # - overseerr
   - ./plex/ks.yaml
