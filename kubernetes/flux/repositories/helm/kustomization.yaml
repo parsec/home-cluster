@@ -26,3 +26,4 @@ resources:
   - ./nvidia-device-plugin.yaml
   - ./nvidia-dcgm.yaml
   - ./nvidia-operator.yaml
+  - ./external-secrets.yaml
