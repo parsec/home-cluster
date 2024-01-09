@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: plex
+  name: sonarr
 spec:
   interval: 30m
   chart:
@@ -24,12 +24,8 @@ spec:
   uninstall:
     keepHistory: false
   dependsOn:
-    - name: nvidia-device-plugin
-      namespace: kube-system
     - name: rook-ceph-cluster
       namespace: rook-ceph
-    - name: volsync
-      namespace: storage
   values:
     controllers:
       main:
@@ -38,21 +34,29 @@ spec:
         containers:
           main:
             image:
-              repository: ghcr.io/onedr0p/plex-beta
-              tag: 1.40.0.7775-456fbaf97@sha256:cd6bafd8cf9f75c2d5b6517de312a82a986049f89f089da74b6bdb23928b8b37
+              repository: ghcr.io/onedr0p/sonarr
+              tag: 4.0.0.748@sha256:f1b1826ccbea3868ff6b30690417fdc1a0f3329ebad0909d0d11ddd856f9f4dd
             env:
+              # https://github.com/Radarr/Radarr/issues/7030#issuecomment-1039689518
+              # https://github.com/dotnet/runtime/issues/9336
+              COMPlus_EnableDiagnostics: "0"
+              PUSHOVER_DEBUG: "false"
+              SONARR__AUTHENTICATION_METHOD: External
+              SONARR__AUTHENTICATION_REQUIRED: DisabledForLocalAddresses
+              SONARR__INSTANCE_NAME: Sonarr
+              SONARR__PORT: &port 80
+              SONARR__LOG_LEVEL: info
+              SONARR__THEME: dark
               TZ: America/New_York
-              NVIDIA_DRIVER_CAPABILITIES: all
-              NVIDIA_VISIBLE_DEVICES: all
-              ALLOWED_NETWORKS: "10.1.0.0/255.255.255.0,10.5.0.0/255.255.255.0"
+            envFrom: *envFrom
             probes:
               liveness: &probes
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
-                    path: /identity
-                    port: 32400
+                    path: /ping
+                    port: *port
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -61,41 +65,31 @@ spec:
               startup:
                 enabled: false
             securityContext:
-              # allowPrivilegeEscalation: false
-              # readOnlyRootFilesystem: true
-              # capabilities: { drop: ["ALL"] }
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 1000m
-                memory: 2Gi
-                nvidia.com/gpu: 1
+                cpu: 10m
               limits:
-                nvidia.com/gpu: 1
-                memory: 16Gi
+                memory: 1Gi
         pod:
-          runtimeClassName: nvidia
-          nodeSelector:
-            nvidia.feature.node.kubernetes.io/gpu: "true"
           securityContext:
             runAsUser: 568
             runAsGroup: 568
+            runAsNonRoot: true
             fsGroup: 568
-            supplementalGroups: [44, 109, 100, 65539]
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [10000]
     service:
       main:
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: 10.1.0.101
         ports:
           http:
-            port: 32400
+            port: *port
     ingress:
       main:
         enabled: true
-        className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.parsec.sh
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.parsec.sh"
             paths:
@@ -109,18 +103,20 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: plex
+        existingClaim: sonarr
+      pushover-notify:
+        type: configMap
+        name: sonarr-configmap
+        defaultMode: 0775
         globalMounts:
-          - path: /config
+          - path: /scripts/pushover-notify.sh
+            subPath: pushover-notify.sh
+            readOnly: true
       tmp:
         type: emptyDir
-      transcode:
-        type: emptyDir
-        medium: Memory
       media:
         type: nfs
         server: zodiark.parsec.sh
         path: /mnt/Data/media
         globalMounts:
           - path: /media
-            readOnly: true

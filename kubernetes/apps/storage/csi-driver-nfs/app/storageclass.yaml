@@ -5,7 +5,7 @@ metadata:
   name: nfs-data
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: 10.1.0.3
+  server: zodiark.parsec.sh
   share: /mnt/Data
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
@@ -17,7 +17,7 @@ metadata:
   name: nfs-media
 provisioner: nfs.csi.k8s.io
 parameters:
-  server: 10.1.0.3
+  server: zodiark.parsec.sh
   share: /mnt/Data/media
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
