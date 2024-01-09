@@ -28,14 +28,6 @@ spec:
       main:
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          init-db:
-            image:
-              repository: ghcr.io/onedr0p/postgres-init
-              tag: 16
-            envFrom: &envFrom
-              - secretRef:
-                  name: prowlarr-secret
         containers:
           main:
             image:
@@ -51,7 +43,9 @@ spec:
               PROWLARR__AUTHENTICATION_METHOD: External
               PROWLARR__THEME: dark
               TZ: America/New_York
-            envFrom: *envFrom
+            envFrom: &envFrom
+              - secretRef:
+                  name: prowlarr-secret
             probes:
               liveness: &probes
                 enabled: true
