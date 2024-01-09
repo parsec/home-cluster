@@ -115,3 +115,4 @@ spec:
         path: /mnt/Data/media
         globalMounts:
           - path: /media
+            readOnly: false
