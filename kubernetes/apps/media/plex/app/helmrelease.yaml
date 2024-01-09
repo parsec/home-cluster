@@ -109,6 +109,8 @@ spec:
       config:
         enabled: true
         existingClaim: plex
+        globalMounts:
+          - path: /config
       tmp:
         type: emptyDir
       transcode:
