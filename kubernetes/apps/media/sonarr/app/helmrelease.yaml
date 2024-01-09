@@ -48,7 +48,9 @@ spec:
               SONARR__LOG_LEVEL: info
               SONARR__THEME: dark
               TZ: America/New_York
-            envFrom: *envFrom
+            envFrom:
+              - secretRef:
+                  name: sonarr-secret
             probes:
               liveness: &probes
                 enabled: true
