@@ -52,14 +52,11 @@ spec:
           existingSecret: curseforge-api-key
           secretKey: CF_API_KEY
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-8"
-    # service:
-    #   main:
-    #     type: LoadBalancer
-    #     annotations:
-    #       io.cilium/lb-ipam-ips: 10.1.0.101
-    #     ports:
-    #       http:
-    #         port: 32400
+    service:
+      main:
+        ports:
+          http:
+            port: 25565
     ingress:
       main:
         enabled: true
