@@ -37,8 +37,9 @@ spec:
 
     minecraftServer:
       eula: true
+      version: 1.19.2
       type: "FORGE"
-      forgeVersion: "43.3.7"
+      forgeVersion: "43.3.0"
       memory: 8Gi
       viewDistance: 30
       gameMode: survival
