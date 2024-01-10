@@ -27,3 +27,4 @@ resources:
   - ./nvidia-dcgm.yaml
   - ./nvidia-operator.yaml
   - ./external-secrets.yaml
+  - ./itzg-minecraft.yaml
