@@ -53,20 +53,22 @@ spec:
           secretKey: CF_API_KEY
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-8"
       serviceType: LoadBalancer
-    service:
-      main:
-        type: LoadBalancer
-        annotations:
-          io.cilium/lb-ipam-ips: 10.1.0.102
-        ports:
-          http:
-            enabled: false
-          minecraft:
-            enabled: true
-            primary: true
-            port: 25565
-            protocol: TCP
-            name: minecraft
+      servicePort: 25565
+      loadBalancerIP: 10.1.0.102
+    # service:
+    #   main:
+    #     type: LoadBalancer
+    #     annotations:
+    #       io.cilium/lb-ipam-ips: 10.1.0.102
+    #     ports:
+    #       http:
+    #         enabled: false
+    #       minecraft:
+    #         enabled: true
+    #         primary: true
+    #         port: 25565
+    #         protocol: TCP
+    #         name: minecraft
     ingress:
       main:
         enabled: true
