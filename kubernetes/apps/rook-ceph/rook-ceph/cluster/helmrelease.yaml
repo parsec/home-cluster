@@ -59,6 +59,12 @@ spec:
             - "10.0.50.0/24"
         connections:
           requireMsgr2: true
+      mgr:
+        modules:
+          - name: pg_autoscaler
+            enabled: true
+          - name: rook
+            enabled: true
       crashCollector:
         disable: false
       dashboard:
