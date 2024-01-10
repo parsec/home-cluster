@@ -54,9 +54,15 @@ spec:
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-8"
     service:
       main:
+        type: LoadBalancer
         ports:
           http:
+            enabled: false
+          minecraft:
+            enabled: true
             port: 25565
+            protocol: TCP
+            name: minecraft
     ingress:
       main:
         enabled: true
