@@ -63,6 +63,7 @@ spec:
         disable: false
       dashboard:
         enabled: true
+        prometheusEndpoint: http://prometheus.observability.svc.cluster.local:9090
         urlPrefix: /
         ssl: false
       storage:
