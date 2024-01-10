@@ -38,7 +38,7 @@ spec:
     minecraftServer:
       eula: true
       version: 1.19.2
-      type: "FORGE"
+      type: "AUTO_CURSEFORGE"
       forgeVersion: "43.3.0"
       memory: 8G
       viewDistance: 30
