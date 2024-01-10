@@ -62,6 +62,7 @@ spec:
             enabled: false
           minecraft:
             enabled: true
+            primary: true
             port: 25565
             protocol: TCP
             name: minecraft
