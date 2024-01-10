@@ -28,3 +28,4 @@ resources:
   - ./nvidia-operator.yaml
   - ./external-secrets.yaml
   - ./itzg-minecraft.yaml
+  - ./rook-ceph.yaml
