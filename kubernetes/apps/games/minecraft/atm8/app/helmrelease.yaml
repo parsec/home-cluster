@@ -52,6 +52,7 @@ spec:
           existingSecret: curseforge-api-key
           secretKey: CF_API_KEY
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-8"
+      serviceType: LoadBalancer
     service:
       main:
         type: LoadBalancer
