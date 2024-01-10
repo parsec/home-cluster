@@ -52,7 +52,31 @@ spec:
           existingSecret: curseforge-api-key
           secretKey: CF_API_KEY
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-8"
-
+    # service:
+    #   main:
+    #     type: LoadBalancer
+    #     annotations:
+    #       io.cilium/lb-ipam-ips: 10.1.0.101
+    #     ports:
+    #       http:
+    #         port: 32400
+    ingress:
+      main:
+        enabled: true
+        className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: external.parsec.sh
+          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+        hosts:
+          - host: &host "{{ .Release.Name }}.parsec.sh"
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: 25565
+        tls:
+          - hosts:
+              - *host
     persistence:
       data:
         existingClaim: atm8-data
