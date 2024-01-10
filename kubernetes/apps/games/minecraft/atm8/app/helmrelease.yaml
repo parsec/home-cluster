@@ -49,7 +49,7 @@ spec:
       woldSaveName: atm8
       autoCurseForge:
         apiKey:
-          existingSecret: curseforge-api-key
+          existingSecret: curseforge-secret
           secretKey: CF_API_KEY
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-8"
       serviceType: LoadBalancer
