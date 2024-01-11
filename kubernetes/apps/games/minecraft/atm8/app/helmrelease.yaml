@@ -34,9 +34,6 @@ spec:
       requests:
         memory: 9Gi
         cpu: 2
-      limits:
-        memory: 9Gi
-        cpu: 6
     podSecurityContext:
       runAsUser: 1000
       runAsGroup: 1000
