@@ -58,7 +58,6 @@ spec:
     extraEnv:
       ENABLE_AUTOPAUSE: false
       ENABLE_AUTOSTOP: false
-      DEBUG: true
 
     minecraftServer:
       eula: true
