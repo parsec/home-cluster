@@ -30,6 +30,8 @@ spec:
     - name: volsync
       namespace: storage
   values:
+    nodeSelector:
+      org.democratic-csi.topology/node: "hythlodaeus"
     resources:
       requests:
         memory: 8Gi
