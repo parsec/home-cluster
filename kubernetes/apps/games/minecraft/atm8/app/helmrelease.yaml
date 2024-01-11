@@ -33,7 +33,7 @@ spec:
     resources:
       requests:
         memory: 8Gi
-        cpu: 2
+        cpu: 8
 
     minecraftServer:
       eula: true
