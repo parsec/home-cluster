@@ -41,6 +41,8 @@ spec:
       runAsGroup: 1000
       runAsNonRoot: true
       fsGroup: 1000
+    extraEnv:
+      ENABLE_AUTOPAUSE: FALSE
 
     minecraftServer:
       eula: true
