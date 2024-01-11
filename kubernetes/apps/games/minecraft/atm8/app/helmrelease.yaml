@@ -69,7 +69,7 @@ spec:
       type: "AUTO_CURSEFORGE"
       forgeVersion: "43.3.0"
       memory: 8G
-      viewDistance: 30
+      viewDistance: 16
       gameMode: survival
       maxTickTime: -1
       difficulty: normal
