@@ -65,6 +65,8 @@ spec:
       version: 1.19.2
       type: "AUTO_CURSEFORGE"
       forgeVersion: "43.3.0"
+      spawnProtection: 0
+
       memory: 8G
       jvmOpts: "-Xms8G -Xmx8G -XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true"
       gameMode: survival
@@ -75,43 +77,19 @@ spec:
       woldSaveName: atm8
       autoCurseForge:
         apiKey:
-          existingSecret: curseforge-secret
+          existingSecret: minecraft-secret
           secretKey: CF_API_KEY
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-8"
       serviceType: LoadBalancer
       servicePort: 25565
       loadBalancerIP: 10.1.0.102
-    # service:
-    #   main:
-    #     type: LoadBalancer
-    #     annotations:
-    #       io.cilium/lb-ipam-ips: 10.1.0.102
-    #     ports:
-    #       http:
-    #         enabled: false
-    #       minecraft:
-    #         enabled: true
-    #         primary: true
-    #         port: 25565
-    #         protocol: TCP
-    #         name: minecraft
-    ingress:
-      main:
+      rcon:
         enabled: true
-        className: external
-        annotations:
-          external-dns.alpha.kubernetes.io/target: external.parsec.sh
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-        hosts:
-          - host: &host "{{ .Release.Name }}.parsec.sh"
-            paths:
-              - path: /
-                service:
-                  name: main
-                  port: 25565
-        tls:
-          - hosts:
-              - *host
+        port: 25575
+        password:
+          existingSecret: minecraft-secret
+          secretKey: MC_RCON_PASSWORD
+
     persistence:
       dataDir:
         enabled: true
