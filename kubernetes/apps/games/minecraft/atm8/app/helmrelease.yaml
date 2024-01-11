@@ -87,6 +87,6 @@ spec:
           - hosts:
               - *host
     persistence:
-      data:
+      dataDir:
         existingClaim: atm8-data
         readOnly: false
