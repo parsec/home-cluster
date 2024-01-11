@@ -32,7 +32,7 @@ spec:
   values:
     resources:
       requests:
-        memory: 9Gi
+        memory: 16Gi
         cpu: 2
     podSecurityContext:
       runAsUser: 1000
@@ -65,7 +65,7 @@ spec:
       version: 1.19.2
       type: "AUTO_CURSEFORGE"
       forgeVersion: "43.3.0"
-      memory: 8G
+      memory: 16G
       viewDistance: 16
       gameMode: survival
       maxTickTime: -1
