@@ -90,3 +90,5 @@ spec:
       dataDir:
         existingClaim: atm8-data
         readOnly: false
+        globalMounts:
+          - path: /data
