@@ -55,6 +55,7 @@ spec:
       memory: 8G
       viewDistance: 30
       gameMode: survival
+      maxTickTime: -1
       difficulty: normal
       pvp: true
       motd: "Welcome to All the Mods 8!"
