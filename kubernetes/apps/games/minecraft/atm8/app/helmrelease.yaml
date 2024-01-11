@@ -32,8 +32,10 @@ spec:
   values:
     resources:
       requests:
-        memory: 8Gi
+        memory: 9Gi
         cpu: 8
+      limits:
+        memory: 9Gi
 
     minecraftServer:
       eula: true
