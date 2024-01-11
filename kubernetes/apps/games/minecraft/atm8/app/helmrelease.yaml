@@ -44,6 +44,7 @@ spec:
       fsGroup: 1000
     extraEnv:
       ENABLE_AUTOPAUSE: FALSE
+      ENABLE_AUTOSTOP: FALSE
 
     minecraftServer:
       eula: true
