@@ -43,8 +43,9 @@ spec:
       runAsNonRoot: true
       fsGroup: 1000
     extraEnv:
-      ENABLE_AUTOPAUSE: FALSE
-      ENABLE_AUTOSTOP: FALSE
+      ENABLE_AUTOPAUSE: false
+      ENABLE_AUTOSTOP: false
+      DEBUG: true
 
     minecraftServer:
       eula: true
