@@ -128,7 +128,7 @@ spec:
           enabled: true
           name: ceph-block
           isDefault: true
-          reclaimPolicy: Delete
+          reclaimPolicy: Retain
           allowVolumeExpansion: true
           parameters:
             imageFormat: "2"
@@ -144,7 +144,7 @@ spec:
       enabled: true
       name: csi-ceph-blockpool
       isDefault: false
-      deletionPolicy: Delete
+      deletionPolicy: Retain
     cephFileSystems:
       - name: ceph-filesystem
         spec:
@@ -170,7 +170,7 @@ spec:
           isDefault: false
           name: ceph-filesystem
           pool: data0
-          reclaimPolicy: Delete
+          reclaimPolicy: Retain
           allowVolumeExpansion: true
           parameters:
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-cephfs-provisioner
@@ -184,4 +184,4 @@ spec:
       enabled: true
       name: csi-ceph-filesystem
       isDefault: false
-      deletionPolicy: Delete
+      deletionPolicy: Retain
