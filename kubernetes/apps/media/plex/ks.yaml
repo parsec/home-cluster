@@ -19,8 +19,8 @@ spec:
   interval: 30m
   retryInterval: 1m
   timeout: 5m
-  # postBuild:
-  #   substitute:
-  #     APP: *app
-  #     GATUS_PATH: /web/index.html
-  #     VOLSYNC_CAPACITY: 30Gi
+  postBuild:
+    substitute:
+      APP: *app
+      GATUS_PATH: /web/index.html
+      VOLSYNC_CAPACITY: 100Gi
