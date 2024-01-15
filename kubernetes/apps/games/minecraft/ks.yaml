@@ -26,4 +26,4 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 50Gi
-      SOURCE_PVC: atm8-data
+      VOLSYNC_SOURCE_PVC: atm8-data
