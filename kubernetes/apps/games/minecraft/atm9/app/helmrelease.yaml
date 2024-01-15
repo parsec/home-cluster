@@ -1,0 +1,101 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: atm9
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: minecraft
+      version: v4.14.0
+      sourceRef:
+        kind: HelmRepository
+        name: itzg-minecraft
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+    - name: volsync
+      namespace: storage
+  values:
+    nodeSelector:
+      org.democratic-csi.topology/node: "hythlodaeus"
+    resources:
+      requests:
+        memory: 16Gi
+        cpu: 3
+      # limits:
+      #  memory: 10Gi
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      runAsNonRoot: true
+      fsGroup: 1000
+    livenessProbe:
+      initialDelaySeconds: 30
+      periodSeconds: 5
+      failureThreshold: 45
+      successThreshold: 1
+      timeoutSeconds: 1
+    readinessProbe:
+      initialDelaySeconds: 60
+      periodSeconds: 5
+      failureThreshold: 45
+      successThreshold: 1
+      timeoutSeconds: 1
+    startupProbe:
+      enabled: true
+      failureThreshold: 30
+      periodSeconds: 10
+
+    minecraftServer:
+      eula: true
+      ops: "p4rsec"
+      version: 1.19.2
+      type: "AUTO_CURSEFORGE"
+      forgeVersion: "47.2.19"
+      spawnProtection: 0
+      memory: 16G
+      jvmOpts: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15 -XX:G1MixedGCLiveThresholdPercent=90 -XX:G1RSetUpdatingPauseTimePercent=5 -XX:SurvivorRatio=32 -XX:+PerfDisableSharedMem -XX:MaxTenuringThreshold=1 -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true"
+      gameMode: survival
+      maxTickTime: -1
+      difficulty: normal
+      pvp: true
+      motd: "Welcome to All the Mods 9!"
+      woldSaveName: atm9
+      autoCurseForge:
+        apiKey:
+          existingSecret: atm9-secret
+          secretKey: CF_API_KEY
+        pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-9"
+      serviceType: LoadBalancer
+      servicePort: 25595
+      loadBalancerIP: 10.1.0.103
+      rcon:
+        enabled: true
+        port: 25575
+
+    extraEnv:
+      ALLOW_FLIGHT: true
+      GUI: false
+      STOP_SERVER_ANNOUNCE_DELAY: 60
+
+    persistence:
+      dataDir:
+        enabled: true
+        existingClaim: atm9
+        readOnly: false
+        globalMounts:
+          - path: /data
