@@ -96,6 +96,7 @@ spec:
       STOP_SERVER_ANNOUNCE_DELAY: 60
     mcbackup:
       enabled: true
+      initialDelay: 5m
       backupInterval: 6h
       backupMethod: rclone
       rcloneRemote: gdrive
