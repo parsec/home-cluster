@@ -111,9 +111,7 @@ spec:
           - path: /data
       backupDir:
         enabled: true
-        type: nfs
-        server: zodiark.parsec.sh
-        path: /mnt/Data/vault
+        storageClass: nfs-data
         readOnly: false
         globalMounts:
           - path: /backups
