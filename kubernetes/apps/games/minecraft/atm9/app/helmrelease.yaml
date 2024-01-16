@@ -99,15 +99,11 @@ spec:
       initialDelay: 5m
       backupInterval: 2h
       pruneBackupsDays: 7
-      backupMethod: tar
-      destDir: /backups/vault/mcbackup/atm9
-      persistence:
-        backupDir:
-          enabled: true
-          storageClass: "nfs-data"
-          readOnly: false
-          globalMounts:
-            - path: /backups
+      backupMethod: rclone
+      rcloneDestDir: /mnt/Data/vault/mcbackup/atm9
+      envFrom:
+        - secretRef:
+            name: atm9-secret
     persistence:
       dataDir:
         enabled: true
