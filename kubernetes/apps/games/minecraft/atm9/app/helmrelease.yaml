@@ -103,11 +103,8 @@ spec:
       rcloneConfig: |
         [gdrive]
           type = drive
-          client_id = $RCLONE_CLIENT_ID
-          client_secret = $RCLONE_CLIENT_SECRET
           scope = drive
           root_folder_id = mcbackup/atm9/
-          token = $RCLONE_TOKEN
       envFrom:
         - secretRef:
             name: atm9-secret
