@@ -103,11 +103,11 @@ spec:
       destDir: /backups/vault/mcbackup/atm9
       persistence:
         backupDir:
-        enabled: true
-        storageClass: nfs-data
-        readOnly: false
-        globalMounts:
-          - path: /backups
+          enabled: true
+          storageClass: nfs-data
+          readOnly: false
+          globalMounts:
+            - path: /backups
     persistence:
       dataDir:
         enabled: true
