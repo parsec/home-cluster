@@ -101,7 +101,13 @@ spec:
       pruneBackupsDays: 7
       backupMethod: tar
       destDir: /backups/vault/mcbackup/atm9
-
+      persistence:
+        backupDir:
+        enabled: true
+        storageClass: nfs-data
+        readOnly: false
+        globalMounts:
+          - path: /backups
     persistence:
       dataDir:
         enabled: true
@@ -109,9 +115,3 @@ spec:
         readOnly: false
         globalMounts:
           - path: /data
-      backupDir:
-        enabled: true
-        storageClass: nfs-data
-        readOnly: false
-        globalMounts:
-          - path: /backups
