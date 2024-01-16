@@ -104,7 +104,7 @@ spec:
       persistence:
         backupDir:
           enabled: true
-          storageClass: nfs-data
+          storageClass: "nfs-data"
           readOnly: false
           globalMounts:
             - path: /backups
