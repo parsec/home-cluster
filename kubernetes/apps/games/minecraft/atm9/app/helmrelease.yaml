@@ -113,6 +113,6 @@ spec:
         type: nfs
         server: zodiark.parsec.sh
         path: /mnt/Data/vault/mcbackup
+        readOnly: false
         globalMounts:
           - path: /backups
-            readOnly: false
