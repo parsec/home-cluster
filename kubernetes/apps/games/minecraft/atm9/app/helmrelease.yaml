@@ -100,7 +100,7 @@ spec:
       backupInterval: 2h
       pruneBackupsDays: 7
       backupMethod: tar
-      destDir: /backups/atm9
+      destDir: /backups/vault/mcbackup/atm9
 
     persistence:
       dataDir:
