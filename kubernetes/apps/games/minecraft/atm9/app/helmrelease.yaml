@@ -30,6 +30,10 @@ spec:
     - name: volsync
       namespace: storage
   values:
+    image:
+      repository: itzg/minecraft-server
+      tag: java17-graalvm
+      pullPolicy: IfNotPresent
     nodeSelector:
       org.democratic-csi.topology/node: "hythlodaeus"
     resources:
@@ -86,7 +90,14 @@ spec:
       rcon:
         enabled: true
         port: 25575
-
+    mcbackup:
+      enabled: true
+      backupInterval: 6h
+      backupMethod: rclone
+      rcloneRemote: gdrive
+      rcloneConfig:
+        existingSecret: atm9-secret
+        secretKey: RCLONE_CONFIG
     extraEnv:
       ALLOW_FLIGHT: true
       GUI: false
