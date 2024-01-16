@@ -95,9 +95,14 @@ spec:
       backupInterval: 6h
       backupMethod: rclone
       rcloneRemote: gdrive
-      rcloneConfig:
-        existingSecret: atm9-secret
-        secretKey: RCLONE_CONFIG
+      rcloneConfig: |
+        [gdrive]
+          type = drive
+          client_id = ${RCLONE_CLIENT_ID}
+          client_secret = ${RCLONE_CLIENT_SECRET}
+          scope = drive
+          root_folder_id = mcbackup/atm9/
+          token = ${RCLONE_TOKEN}
     extraEnv:
       ALLOW_FLIGHT: true
       GUI: false
