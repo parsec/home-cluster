@@ -29,9 +29,6 @@ spec:
       namespace: rook-ceph
     - name: volsync
       namespace: storage
-  valuesFrom:
-    - kind: Secret
-      name: atm9-secret
   values:
     image:
       repository: itzg/minecraft-server
@@ -93,6 +90,10 @@ spec:
       rcon:
         enabled: true
         port: 25575
+    extraEnv:
+      ALLOW_FLIGHT: true
+      GUI: false
+      STOP_SERVER_ANNOUNCE_DELAY: 60
     mcbackup:
       enabled: true
       backupInterval: 6h
@@ -101,15 +102,14 @@ spec:
       rcloneConfig: |
         [gdrive]
           type = drive
-          client_id = ${RCLONE_CLIENT_ID}
-          client_secret = ${RCLONE_CLIENT_SECRET}
+          client_id = $RCLONE_CLIENT_ID
+          client_secret = $RCLONE_CLIENT_SECRET
           scope = drive
           root_folder_id = mcbackup/atm9/
-          token = ${RCLONE_TOKEN}
-    extraEnv:
-      ALLOW_FLIGHT: true
-      GUI: false
-      STOP_SERVER_ANNOUNCE_DELAY: 60
+          token = $RCLONE_TOKEN
+    envFrom:
+      - secretRef:
+          name: atm9-secret
 
     persistence:
       dataDir:
