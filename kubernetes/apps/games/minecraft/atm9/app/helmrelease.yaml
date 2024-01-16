@@ -107,9 +107,9 @@ spec:
           scope = drive
           root_folder_id = mcbackup/atm9/
           token = $RCLONE_TOKEN
-    envFrom:
-      - secretRef:
-          name: atm9-secret
+      envFrom:
+        - secretRef:
+            name: atm9-secret
 
     persistence:
       dataDir:
