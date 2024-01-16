@@ -97,17 +97,10 @@ spec:
     mcbackup:
       enabled: true
       initialDelay: 5m
-      backupInterval: 6h
-      backupMethod: rclone
-      rcloneRemote: gdrive
-      rcloneConfig: |
-        [gdrive]
-          type = drive
-          scope = drive
-          root_folder_id = mcbackup/atm9/
-      envFrom:
-        - secretRef:
-            name: atm9-secret
+      backupInterval: 2h
+      pruneBackupsDays: 7
+      backupMethod: tar
+      destDir: /backups/atm9
 
     persistence:
       dataDir:
@@ -116,3 +109,10 @@ spec:
         readOnly: false
         globalMounts:
           - path: /data
+      media:
+        type: nfs
+        server: zodiark.parsec.sh
+        path: /mnt/Data/vault/mcbackup
+        globalMounts:
+          - path: /backups
+            readOnly: false
