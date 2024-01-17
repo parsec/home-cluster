@@ -97,7 +97,7 @@ spec:
           service:
             enabled: true
             type: LoadBalancer
-            port: 80
+            port: 8080
           ingress:
             ingressClassName: external
             enabled: true
