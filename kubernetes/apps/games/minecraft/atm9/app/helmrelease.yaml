@@ -103,7 +103,7 @@ spec:
             enabled: true
             annotations:
               external-dns.alpha.kubernetes.io/target: external.parsec.sh
-              nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+              nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
             hosts:
               - name: &host atm9-map.parsec.sh
                 path: /
