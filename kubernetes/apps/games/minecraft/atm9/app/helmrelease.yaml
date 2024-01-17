@@ -92,12 +92,12 @@ spec:
         port: 25575
       extraPorts:
         - name: map
-          containerPort: 8080
+          containerPort: 8123
           protocol: TCP
           service:
             enabled: true
             type: ClusterIP
-            port: 8080
+            port: 8123
           ingress:
             ingressClassName: external
             enabled: true
