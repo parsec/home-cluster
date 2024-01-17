@@ -100,7 +100,8 @@ spec:
       backupInterval: 2h
       pruneBackupsDays: 7
       backupMethod: rclone
-      rcloneDestDir: "./atm9"
+      rcloneRemote: zodiark
+      rcloneDestDir: ./atm9
       rcloneConfig: |
         [zodiark]
         type = ftp
