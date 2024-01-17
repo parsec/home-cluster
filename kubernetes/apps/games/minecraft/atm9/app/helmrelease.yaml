@@ -103,11 +103,11 @@ spec:
       rcloneDestDir: "./atm9"
       rcloneConfig: |
         [zodiark]
-          type = ftp
-          host = zodiark.parsec.sh
-          user = "anonymous"
-          pass = "anonymous"
-          port = 21
+        type = ftp
+        host = zodiark.parsec.sh
+        user = "anonymous"
+        pass = "anonymous"
+        port = 21
     persistence:
       dataDir:
         enabled: true
