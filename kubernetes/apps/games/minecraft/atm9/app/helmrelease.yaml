@@ -100,13 +100,14 @@ spec:
       backupInterval: 2h
       pruneBackupsDays: 7
       backupMethod: rclone
-      rcloneDestDir: "/mnt/Data/vault/mcbackup/atm9"
+      rcloneDestDir: "./atm9"
       rcloneConfig: |
         [zodiark]
           type = ftp
-      envFrom:
-        - secretRef:
-            name: atm9-secret
+          host = zodiark.parsec.sh
+          user = "anonymous"
+          pass = "anonymous"
+          port = 21
     persistence:
       dataDir:
         enabled: true
