@@ -105,11 +105,11 @@ spec:
               external-dns.alpha.kubernetes.io/target: external.parsec.sh
               nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
             hosts:
-              - name: map-{{ .Release.Name }}.parsec.sh
+              - name: &host map-{{ .Release.Name }}.parsec.sh
                 path: /
             tls:
-              hosts:
-                - map-{{ .Release.Name }}.parsec.sh
+              - hosts:
+                  - *host
     extraEnv:
       ALLOW_FLIGHT: true
       GUI: false
