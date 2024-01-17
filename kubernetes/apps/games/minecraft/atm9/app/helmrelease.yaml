@@ -96,7 +96,7 @@ spec:
           protocol: TCP
           service:
             enabled: true
-            type: LoadBalancer
+            type: ClusterIP
             port: 8080
           ingress:
             ingressClassName: external
