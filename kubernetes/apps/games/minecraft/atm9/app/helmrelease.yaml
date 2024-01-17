@@ -107,7 +107,7 @@ spec:
         type = ftp
         host = zodiark.parsec.sh
         user = anonymous
-        pass = YW5vbnltb3Vz
+        pass = gIXs6-hO5MLIuYg0s3DvfL0P4_-ZbETioA
         port = 21
     persistence:
       dataDir:
