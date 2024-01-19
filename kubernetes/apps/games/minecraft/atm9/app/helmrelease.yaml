@@ -38,7 +38,7 @@ spec:
       org.democratic-csi.topology/node: "hythlodaeus"
     resources:
       requests:
-        memory: 16Gi
+        memory: 10Gi
         cpu: 4
       # limits:
       #  memory: 10Gi
@@ -71,7 +71,7 @@ spec:
       type: "AUTO_CURSEFORGE"
       forgeVersion: "47.2.19"
       spawnProtection: 0
-      memory: 16G
+      memory: 10G
       jvmOpts: "-XX:+UseG1GC -XX:+ParallelRefProcEnabled -XX:MaxGCPauseMillis=200 -XX:+UnlockExperimentalVMOptions -XX:+UnlockDiagnosticVMOptions -XX:+AlwaysActAsServerClassMachine -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -XX:+UseNUMA -XX:AllocatePrefetchStyle=3 -XX:NmethodSweepActivity=1 -XX:ReservedCodeCacheSize=400M -XX:NonNMethodCodeHeapSize=12M -XX:ProfiledCodeHeapSize=194M -XX:NonProfiledCodeHeapSize=194M -XX:-DontCompileHugeMethods -XX:+PerfDisableSharedMem -XX:+UseFastUnorderedTimeStamps -XX:+UseCriticalJavaThreadPriority -XX:+EagerJVMCI -Dgraal.TuneInlinerExploration=1 -Dgraal.CompilerConfiguration=enterprise -Dusing.aikars.flags=https://mcflags.emc.gs -Daikars.new.flags=true"
       gameMode: survival
       maxTickTime: -1
@@ -117,7 +117,7 @@ spec:
     mcbackup:
       enabled: true
       initialDelay: 5m
-      backupInterval: 2h
+      backupInterval: 6h
       pruneBackupsDays: 7
       backupMethod: rclone
       rcloneRemote: zodiark
