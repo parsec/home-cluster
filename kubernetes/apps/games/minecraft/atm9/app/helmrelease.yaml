@@ -129,6 +129,12 @@ spec:
         user = anonymous
         pass = gIXs6-hO5MLIuYg0s3DvfL0P4_-ZbETioA
         port = 21
+      resources:
+        requests:
+          memory: 500Mi
+          cpu: 500m
+        limits:
+          memory: 2Gi
     persistence:
       dataDir:
         enabled: true
