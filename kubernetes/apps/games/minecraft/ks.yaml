@@ -53,3 +53,4 @@ spec:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 50Gi
+      GATUS_SUBDOMAIN: mc
