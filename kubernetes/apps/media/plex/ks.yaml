@@ -22,6 +22,6 @@ spec:
   postBuild:
     substitute:
       APP: *app
-      # GATUS_PATH: /web/index.html
+      GATUS_PATH: /web/index.html
       VOLSYNC_CAPACITY: 100Gi
       VOLSYNC_SOURCE_PVC: plex
