@@ -29,3 +29,5 @@ resources:
   - ./external-secrets.yaml
   - ./itzg-minecraft.yaml
   - ./rook-ceph.yaml
+  - ./cloudnative-pg.yaml
+  - ./redis-operator.yaml
