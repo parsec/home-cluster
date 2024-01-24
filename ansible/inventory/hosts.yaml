@@ -12,3 +12,8 @@ kubernetes:
         hythlodaeus:
           ansible_user: parsec
           ansible_host: 10.1.0.6
+    worker:
+      hosts:
+        hydaelyn:
+          ansible_user: parsec
+          ansible_host: 10.1.0.7
