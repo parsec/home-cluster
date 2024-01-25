@@ -87,6 +87,9 @@ spec:
           - name: hythlodaeus
             devices:
               - name: /dev/disk/by-id/ata-WDC_WDS100T2B0B-00YS70_20031D801590
+          - name: hydaelyn
+            devices:
+              - name: /dev/disk/by-id/nvme-CT2000P1SSD8_20392AB1904B
       placement:
         mgr: &placement
           nodeAffinity:
