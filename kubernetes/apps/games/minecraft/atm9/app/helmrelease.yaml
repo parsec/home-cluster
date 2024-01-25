@@ -83,7 +83,7 @@ spec:
         apiKey:
           existingSecret: atm9-secret
           secretKey: CF_API_KEY
-        pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-9"
+        pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-9/files/5055211"
       serviceType: LoadBalancer
       servicePort: 25595
       loadBalancerIP: 10.1.0.103
