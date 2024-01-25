@@ -117,8 +117,8 @@ spec:
     mcbackup:
       enabled: true
       initialDelay: 5m
-      backupInterval: 6h
-      pruneBackupsDays: 7
+      backupInterval: 24h
+      pruneBackupsDays: 3
       backupMethod: rclone
       rcloneRemote: zodiark
       rcloneDestDir: ./atm9
