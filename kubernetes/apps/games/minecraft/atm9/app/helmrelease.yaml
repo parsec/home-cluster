@@ -35,7 +35,7 @@ spec:
       tag: java17-graalvm
       pullPolicy: IfNotPresent
     nodeSelector:
-      org.democratic-csi.topology/node: "hythlodaeus"
+      org.democratic-csi.topology/node: "hydaelyn"
     resources:
       requests:
         memory: 10Gi
