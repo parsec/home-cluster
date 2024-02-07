@@ -1,603 +1,193 @@
-# Deploy a Kubernetes cluster backed by Flux
+<div align="center">
 
-Welcome to my highly opinionated template for deploying a single Kubernetes ([k3s](https://k3s.io)) cluster with [Ansible](https://www.ansible.com) and using [Flux](https://toolkit.fluxcd.io) to manage its state.
+<img src="https://camo.githubusercontent.com/5b298bf6b0596795602bd771c5bddbb963e83e0f/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67" align="center" width="144px" height="144px"/>
 
-## 👋 Introduction
+### My home lab repository :octocat:
 
-The goal of this project is to make it easy for people interested in learning Kubernetes to deploy a cluster at home and become familiar with the GitOps tool Flux.
+_... managed with Flux, Renovate and GitHub Actions_ :robot:
 
-This template implements Flux in a way that promotes legibility and ease of use for those who are new (or relatively new) to the technology and GitOps in general.
+</div>
 
-If you are new to Flux and GitOps in general it is important to understand that **all changes** you want made to your Kubernetes cluster should be **commited to your Git repository** which Flux will pick up and attempt to apply. You're still free to make _dirty_ edits using `kubectl` but keep in mind that Flux might revert them once its reconcilation loop happens.
+<br/>
 
-## ✨ Features
+<div align="center">
 
-- Automated, reproducible, customizable setup through Ansible templates and playbooks
-- Opinionated implementation of Flux with [strong community support](https://github.com/onedr0p/flux-cluster-template/tree/main#-help)
-- Encrypted secrets thanks to [SOPS](https://github.com/getsops/sops) and [Age](https://github.com/FiloSottile/age)
-- Web application firewall thanks to [Cloudflare Tunnels](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/)
-- SSL certificates thanks to [Cloudflare](https://cloudflare.com) and [cert-manager](https://cert-manager.io)
-- HA control plane capability thanks to [kube-vip](https://kube-vip.io)
-- Next-gen networking thanks to [Cilium](https://cilium.io/)
-- A [Renovate](https://www.mend.io/renovate)-ready repository with pull request diffs provided by [flux-local](https://github.com/allenporter/flux-local)
-- Integrated [GitHub Actions](https://github.com/features/actions)
-- ... and more!
+[![Kubernetes](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Fonedr0p%2Fhome-ops%2Fmain%2Fkubernetes%2Fmain%2Fapps%2Ftools%2Fsystem-upgrade-controller%2Fplans%2Fserver.yaml&query=%24.spec.version&style=for-the-badge&logo=kubernetes&logoColor=white&label=%20)](https://k3s.io/)&nbsp;&nbsp;
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit)
+<!-- [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/parsec/home-cluster/Schedule%20-%20Renovate%20Helm%20Releases?label=renovate&logo=renovatebot&style=for-the-badge)](https://github.com/parsec/home-cluster/actions/workflows/renovate-schedule.yaml) -->
+[![Lines of code](https://img.shields.io/tokei/lines/github/parsec/home-cluster?style=for-the-badge&color=brightgreen&label=lines&logo=codefactor&logoColor=white)](https://github.com/parsec/home-cluster/graphs/contributors)
 
-## 📝 Pre-start checklist
+</div>
 
-> [!IMPORTANT]
-> Before we get started everything below must be taken into consideration, you must...
+---
 
-- [ ] have some experience with the following: Git/SCM, containers, networking and scripting.
-- [ ] bring a **positive attitude** and be ready to learn and fail a lot. _The more you fail, the more you can learn from._
-- [ ] run the cluster on bare metal machines or VMs within your home network &mdash; **this is NOT designed for cloud environments**.
-- [ ] have Debian 12 freshly installed on 1 or more AMD64/ARM64 bare metal machines or VMs. Each machine will be either a **control node** or a **worker node** in your cluster.
-- [ ] give your nodes unrestricted internet access &mdash; **air-gapped environments won't work**.
-- [ ] have a domain you can manage on Cloudflare.
-- [ ] be willing to commit encrypted secrets to a public GitHub repository.
-- [ ] have a DNS server that supports split DNS (e.g. Pi-Hole) deployed somewhere outside your cluster **ON** your home network.
+## 📖 Overview
 
-## 💻 Machine Preparation
+This is my home cluster, built on [k3s](https://k3s.io), backed by [FluxCD](https://fluxcd.io/), [Terraform](https://terraform.io), [Ansible](https://www.ansible.com/), and GitOps/DevOps principles. This is a place for me to learn, and share everything I've learned along the way. Feel free to ask questions, submit improvements, and learn from all the hard work I've put into this!
 
-### System requirements
+If you want to read about my adventures, I try to post about all my learning experiences on [my blog](https://blog.gitgud.sh). Come git gud with me!
 
-> [!IMPORTANT]
-> 1. The default behaviour of k3s is that all nodes are able to run workloads, **including** control nodes. Worker nodes are therefore optional.
-> 2. Do you have 3 or more nodes? It is strongly recommended to make 3 of them control nodes for a highly available control plane.
-> 3. Running the cluster on Proxmox VE? My thoughts and recommendations about that are documented [here](https://onedr0p.github.io/home-ops/notes/proxmox-considerations.html).
+---
 
-| Role    | Cores    | Memory        | System Disk               |
-|---------|----------|---------------|---------------------------|
-| Control | 4 _(6*)_ | 8GB _(24GB*)_ | 100GB _(500GB*)_ SSD/NVMe |
-| Worker  | 4 _(6*)_ | 8GB _(24GB*)_ | 100GB _(500GB*)_ SSD/NVMe |
-| _\* recommended_ |
+## ⛵ Kubernetes
 
-### Debian for AMD64
+There's an excellent template over at [k8s-at-home/template-cluster-k3](https://github.com/k8s-at-home/template-cluster-k3s) that I based my cluster on if you feel like following along :)
 
-1. Download the latest stable release of Debian from [here](https://cdimage.debian.org/debian-cd/current/amd64/iso-dvd), then follow [this guide](https://www.linuxtechi.com/how-to-install-debian-12-step-by-step) to get it installed. Deviations from the guide:
+### Installation
 
-    ```txt
-    Choose "Guided - use entire disk"
-    Choose "All files in one partition"
-    Delete Swap partition
-    Uncheck all Debian desktop environment options
-    ```
+My cluster is [k3s](https://k3s.io/) provisioned overtop bare-metal Ubuntu 20.04 using the [Ansible](https://www.ansible.com/) galaxy role [ansible-role-k3s](https://github.com/PyratLabs/ansible-role-k3s). This is a semi hyper-converged cluster, workloads and block storage are sharing the same available resources on my nodes while I have a separate server for (NFS) file storage.
 
-2. [Post install] Remove CD/DVD as apt source
+🔸 _[Click here](./ansible/) to see my Ansible playbooks and roles._
 
-    ```sh
-    su -
-    sed -i '/deb cdrom/d' /etc/apt/sources.list
-    apt update
-    exit
-    ```
+### Core Components
 
-3. [Post install] Enable sudo for your non-root user
+- [actions-runner-controller](https://github.com/actions/actions-runner-controller): self-hosted Github runners
+- [cilium](https://github.com/cilium/cilium): internal Kubernetes networking plugin
+- [cert-manager](https://cert-manager.io/docs/): creates SSL certificates for services in my cluster
+- [external-dns](https://github.com/kubernetes-sigs/external-dns): automatically syncs DNS records from my cluster ingresses to a DNS provider
+- [external-secrets](https://github.com/external-secrets/external-secrets/): managed Kubernetes secrets using [1Password Connect](https://github.com/1Password/connect).
+- [ingress-nginx](https://github.com/kubernetes/ingress-nginx/): ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer
+- [rook](https://github.com/rook/rook): distributed block storage for persistent storage
+- [sops](https://toolkit.fluxcd.io/guides/mozilla-sops/): managed secrets for Kubernetes, Ansible, and Terraform which are committed to Git
+<!-- - [spegel](https://github.com/XenitAB/spegel): stateless cluster local OCI registry mirror -->
+- [tf-controller](https://github.com/weaveworks/tf-controller): additional Flux component used to run Terraform from within a Kubernetes cluster.
+- [volsync](https://github.com/backube/volsync): backup and recovery of persistent volume claims
 
-    ```sh
-    su -
-    apt update
-    apt install -y sudo
-    usermod -aG sudo ${username}
-    echo "${username} ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/${username}
-    exit
-    newgrp sudo
-    sudo apt update
-    ```
+### GitOps
 
-4. [Post install] Add SSH keys (or use `ssh-copy-id` on the client that is connecting)
+[Flux](https://github.com/fluxcd/flux2) watches the clusters in my [kubernetes](./kubernetes/) folder (see Directories below) and makes the changes to my clusters based on the state of my Git repository.
 
-    📍 _First make sure your ssh keys are up-to-date and added to your github account as [instructed](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account)._
+The way Flux works for me here is it will recursively search the `kubernetes/${cluster}/apps` folder until it finds the most top level `kustomization.yaml` per directory and then apply all the resources listed in it. That aforementioned `kustomization.yaml` will generally only have a namespace resource and one or many Flux kustomizations (`ks.yaml`). Under the control of those Flux kustomizations there will be a `HelmRelease` or other resources related to the application which will be applied.
 
-    ```sh
-    mkdir -m 700 ~/.ssh
-    sudo apt install -y curl
-    curl https://github.com/${github_username}.keys > ~/.ssh/authorized_keys
-    chmod 600 ~/.ssh/authorized_keys
-    ```
+[Renovate](https://github.com/renovatebot/renovate) watches my **entire** repository looking for dependency updates, when they are found a PR is automatically created. When some PRs are merged Flux applies the changes to my cluster.
 
-### Debian for RasPi4
+### Directories
 
-> [!IMPORTANT]
-> 1. It is recommended to have an 8GB RasPi model. Most important is to **boot from an external SSD/NVMe** rather than an SD card. This is [supported natively](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html), however if you have an early model you may need to [update the bootloader](https://www.tomshardware.com/how-to/boot-raspberry-pi-4-usb) first.
-> 2. Check the [power requirements](https://www.raspberrypi.com/documentation/computers/raspberry-pi.html#power-supply) if using a PoE Hat and a SSD/NVMe dongle.
+The Git repository contains the following directories under [cluster](./cluster/) and are ordered below by how [Flux](https://github.com/fluxcd/flux2) will apply them.
 
-1. Download the latest stable release of Debian from [here](https://raspi.debian.net/tested-images). _**Do not** use Raspbian or DietPi or any other flavor Linux OS._
+- **flux**: directory is the entrypoint to [Flux](https://github.com/fluxcd/flux2).
+<!-- - **crds**: directory contains custom resource definitions (CRDs) that need to exist globally in your cluster before anything else exists. -->
+<!-- - **core**: directory (depends on **crds**) are important infrastructure applications (grouped by namespace) that should never be pruned by [Flux](https://github.com/fluxcd/flux2). -->
+- **apps**: directory (depends on **core**) is where your common applications (grouped by namespace) could be placed, [Flux](https://github.com/fluxcd/flux2) will prune resources here if they are not tracked by Git anymore.
+- **bootstrap**: directory contains bootstrap procedures for the cluster(s).
+- **templates**: directory contains re-useable components that can be used in the **apps** directory.
 
-2. Flash the image onto an SSD/NVMe drive.
+```sh
+📁 kubernetes
+├── 📁 apps           # applications
+├── 📁 bootstrap      # bootstrap procedures
+├── 📁 flux           # core flux configuration
+└── 📁 templates      # re-useable components
+```
 
-3. Re-mount the drive to your workstation and then do the following (per the [official documentation](https://raspi.debian.net/defaults-and-settings)):
+### Networking
 
-    ```txt
-    Open 'sysconf.txt' in a text editor and save it upon updating the information below
-      - Change 'root_authorized_key' to your desired public SSH key
-      - Change 'root_pw' to your desired root password
-      - Change 'hostname' to your desired hostname
-    ```
+| Name                                         | CIDR              |
+|----------------------------------------------|-------------------|
+| Kubernetes Nodes                             | `10.1.0.0/24`     |
+| KubeVIP                                      | `10.1.0.117`      |
+| Kubernetes gateway                           | `10.1.0.20`       |
+| Kubernetes external ingress                  | `10.1.0.21`       |
+| Kubernetes internal ingress                  | `10.1.0.22`       |
+| Kubernetes cluster CIDR                      | `10.42.0.0/16`    |
+| Kubernetes services CIDR                     | `10.43.0.0/16`    |
 
-4. Connect SSD/NVMe drive to the Raspberry Pi 4 and power it on.
+---
 
-5. [Post install] SSH into the device with the `root` user and then create a normal user account with `adduser ${username}`
+## ☁️ Cloud Dependencies
 
-6. [Post install] Follow steps 3 and 4 from [Debian for AMD64](#debian-for-amd64).
+While most of my infrastructure and workloads are self-hosted I do rely upon the cloud for certain key parts of my setup. This saves me from having to worry about two things. (1) Dealing with chicken/egg scenarios and (2) services I critically need whether my cluster is online or not.
 
-7. [Post install] Install `python3` which is needed by Ansible.
+The alternative solution to these two problems would be to host a Kubernetes cluster in the cloud and deploy applications like [HCVault](https://www.vaultproject.io/), [Vaultwarden](https://github.com/dani-garcia/vaultwarden), and [Gatus](https://gatus.io/). However, maintaining another cluster and monitoring another group of workloads is a lot more time and effort than I am willing to put in.
 
-    ```sh
-    sudo apt install -y python3
-    ```
+| Service                                         | Use                                                               | Cost           |
+|-------------------------------------------------|-------------------------------------------------------------------|----------------|
+| [1Password](https://1password.com/)             | Secrets with [External Secrets](https://external-secrets.io/)     | ~$65/yr        |
+| [Cloudflare](https://www.cloudflare.com/)       | Domain and DNS                                                    | Free           |
+| [Backblaze B2](https://www.backblaze.com/)      | Object storage for backups                                        | ~$360/yr       |
+| [Newshosting](https://www.newshosting.com/)     | Usenet access                                                     | ~$100/yr       |
+| [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments    | ~$180/yr       |
+| [NextDNS](https://nextdns.io/)                  | My router DNS server which includes AdBlocking                    | ~$20/yr        |
+| [Pushover](https://pushover.net/)               | Kubernetes Alerts and application notifications                   | $5 OTP         |
+<!-- | [Terraform Cloud](https://www.terraform.io/)    | Storing Terraform state                                           | Free           | -->
+<!-- | [UptimeRobot](https://uptimerobot.com/)         | Monitoring internet connectivity and external facing applications | ~$60/yr        | -->
+|                                                 |                                                                   | Total: ~$60/mo |
 
-## 🚀 Getting Started
+---
 
-Once you have installed Debian on your nodes, there are six stages to getting a Flux-managed cluster up and runnning.
+### Persistent Volume Data Backup and Recovery
 
-> [!IMPORTANT]
-> For all stages below the commands **MUST** be ran on your personal workstation within your repository directory
+I utilize [rook-ceph](https://github.com/rook/rook) for my persistent volume claims (PVCs) and have a backup and recovery solution in place using [volsync](https://github.com/backube/volsync), which backs up to an S3 bucket hosted by Backblaze B2.
 
-### 🎉 Stage 1: Create a Git repository
+---
 
-1. Create a new **public** repository by clicking the big green "Use this template" button at the top of this page.
+## 🌐 DNS
 
-2. Clone **your new repo** to you local workstation and `cd` into it.
+### Ingress Controller
 
-### 🌱 Stage 2: Setup your local workstation environment
+Over WAN, I have port forwarded ports `80` and `443` to the load balancer IP of my ingress controller that's running in my Kubernetes cluster.
 
-1. Install the most recent version of [task](https://taskfile.dev/), see the task [installation docs](https://taskfile.dev/installation/) for other supported platforms.
+[Cloudflare](https://www.cloudflare.com/) works as a proxy to hide my homes WAN IP and also as a firewall. When not on my home network, all the traffic coming into my ingress controller on port `80` and `443` comes from Cloudflare.
 
-    ```sh
-    # Brew
-    brew install go-task
-    ```
+🔸 _Cloudflare is also configured to GeoIP block all countries except a few I have whitelisted_
 
-2. Install the most recent version of [direnv](https://direnv.net/), see the direnv [installation docs](https://direnv.net/docs/installation.html) for other supported platforms.
+### Internal DNS
 
-    📍 _After installing `direnv` be sure to **[hook it into your shell](https://direnv.net/docs/hook.html)** and after that is done run `direnv allow` while in your repos' directory._
+Handled by [pi-hole](https://pi-hole.net/), which is running on a Raspberry Pi 4 8GB.
 
-    ```sh
-    # Brew
-    brew install direnv
-    ```
+### External DNS
 
-3. Setup a Python virual env and install Ansible by running the following task command.
+[external-dns](https://github.com/kubernetes-sigs/external-dns) is deployed in my cluster and configure to sync DNS records to [Cloudflare](https://www.cloudflare.com/). The only ingress this `external-dns` instance looks at to gather DNS records to put in `Cloudflare` are ones that have an ingress class name of `external` and contain an ingress annotation `external-dns.alpha.kubernetes.io/target`.
 
-    📍 _This commands requires Python 3.10+ to be installed_
+🔸 _[Click here](./terraform/cloudflare) to see how else I manage Cloudflare._
 
-    ```sh
-    # Platform agnostic
-    task deps
-    ```
+### Dynamic DNS
 
-4. Install the required tools: [age](https://github.com/FiloSottile/age), [flux](https://toolkit.fluxcd.io/), [cloudflared](https://github.com/cloudflare/cloudflared), [kubectl](https://kubernetes.io/docs/tasks/tools/), [sops](https://github.com/getsops/sops)
+My home IP can change at any given time and in order to keep my WAN IP address up to date on Cloudflare I have deployed a [CronJob](./cluster/apps/networking/cloudflare-ddns) in my cluster. This periodically checks and updates the `A` record `ipv4.domain.tld`. I followed the example of [onedr0p/home-ops](https://github.com/onedr0p/home-ops/tree/main/cluster/apps/networking/cloudflare-ddns) as well as docs online. I'll probably write a blog post about it! `external-dns` is pure magic!
 
-   📍 _Not using brew? Make sure to look up how to install the latest version of each of these CLI tools yourself._
+---
 
-    ```sh
-    # Brew
-    task brew:deps
-    ```
+## ⚡ Network Attached Storage
 
-### 🔧 Stage 3: Do bootstrap configuration
+Right now, I'm running my NAS off an old Dell PowerEdge R510 12 bay server. It's a little power hungry! I run TrueNAS, and have a RAIDz10 setup.
 
-📍 _Both `bootstrap/vars/config.yaml` and `bootstrap/vars/addons.yaml` files contain necessary information that is **vital** to the bootstrap process._
+Currently, my raw storage capacity is about 56TB. However, I only get about half that since I'm doing RAIDz10. I have a striped set of 6 mirrored pairs. Effectively I can lose up to half my drives, but if I lose both drives in any pair, I'm having a bad day.
 
-1. Generate the `bootstrap/vars/config.yaml` and `bootstrap/vars/addons.yaml` configuration files.
+To offset this, I back up the NAS once a week to Backblaze B2 object storage, using a data protection setting in TrueNAS SCALE.
 
-    ```sh
-    task init
-    ```
+I'm slowly replacing all the 2TB drives, which came with my NAS, as they fail or I catch a sale on nicer WD Easy Store drives that I shuck. These are usually white label WD Red drives, or sometimes even better, HGST drives. My plan is to slowly upgrade everything to 12TB drives.
 
-2. Setup Age private / public key
+My NAS can be accessed via NFS/SMB/FTP over my home network.
 
-    📍 _Using [SOPS](https://github.com/getsops/sops) with [Age](https://github.com/FiloSottile/age) allows us to encrypt secrets and use them in Ansible and Flux._
+---
 
-    2a. Create a Age private / public key (this file is gitignored)
+## 🔧 Hardware
 
-      ```sh
-      age-keygen -o age.key
-      ```
+| Device                    | Count | OS Disk Size     | Data Disk Size                           | Ram   | Operating System        | Purpose                        |
+|---------------------------|-------|------------------|------------------------------------------|-------|-------------------------|--------------------------------|
+| Poweredge R720            | 1     | 512GB SSD        | 1x1TB SSD                                | 128GB | Debian 12               | Kubernetes (k3s) Server        |
+| Intel NUC8i7HVK1          | 1     | 512GB NVMe       | 1x1TB SSD                                | 64GB  | Debian 12               | Kubernetes (k3s) Server        |
+| UCS C220 M3               | 1     | 512GB SSD        | 1x1TB SSD                                | 96GB  | Debian 12               | Kubernetes (k3s) Server        |
+| Minisforum UM790 Pro      | 1     | 512GB NVMe       | 1x2TB NVMe                               | 32GB  | Debian 12               | Kubernetes (k3s) Worker        |
+| PowerEdge R510            | 1     | 256GB SSD        | 6x12TB, 2x8TB, 4x2TB, 2x512GB SSD cache  | 16GB  | TrueNAS SCALE 23.10     | Network Attached Storage (NAS) |
+| Raspberry Pi 4 8GB        | 1     | 64GB SD          | -                                        | 8GB   | Raspberry Pi OS 32-bit  | Pi-hole                        |
+| Unifi Dream Machine Pro   | 1     | -                | -                                        | -     | UniFi OS                | Network Gateway                |
+| Unifi Switch 24 PoE Pro   | 1     | -                | -                                        | -     | UniFi OS                | Network Switch                 |
 
-    2b. Fill out the appropriate vars in `bootstrap/vars/config.yaml`
+---
 
-3. Create Cloudflare API Token
+## 🤝 Graditude and Thanks
 
-    📍 _To use `cert-manager` with the Cloudflare DNS challenge you will need to create a API Token._
+Thanks to all the people who donate their time to the [Kubernetes @Home](https://github.com/k8s-at-home/) community. A lot of inspiration for my cluster came from the people that have shared their clusters over at [awesome-home-kubernetes](https://github.com/k8s-at-home/awesome-home-kubernetes).
 
-   3a. Head over to Cloudflare and create a API Token by going [here](https://dash.cloudflare.com/profile/api-tokens).
+---
 
-   3b. Under the `API Tokens` section click the blue `Create Token` button.
+## 📜 Changelog
 
-   3c. Click the blue `Use template` button for the `Edit zone DNS` template.
+See [commit history](https://github.com/parsec/home-cluster/commits/main)
 
-   3d. Name your token something like `home-kubernetes`
+---
 
-   3e. Under `Permissions`, click `+ Add More` and add each permission below:
+## 🔏 License
 
-    ```text
-    Zone - DNS - Edit
-    Account - Cloudflare Tunnel - Read
-    ```
-
-   3f. Limit the permissions to a specific account and zone resources.
-
-   3g. Fill out the appropriate vars in `bootstrap/vars/config.yaml`
-
-4. Create Cloudflare Tunnel
-
-    📍 _To expose services to the internet you will need to create a [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/)._
-
-    4a. Authenticate cloudflared to your domain
-
-      ```sh
-      cloudflared tunnel login
-      ```
-
-    4b. Create the tunnel
-
-      ```sh
-      cloudflared tunnel create k8s
-      ```
-
-    4c. In the `~/.cloudflared` directory there will be a json file with details you need. Ignore the `cert.pem` file.
-
-    4d. Fill out the appropriate vars in `bootstrap/vars/config.yaml`
-
-5. Complete filling out the rest of the `bootstrap/vars/config.yaml` configuration file.
-
-    5a. Ensure `bootstrap_acme_production_enabled` is set to `false`.
-
-    5b. [Optional] Update `bootstrap/vars/addons.yaml` and enable applications you would like included.
-
-6. Once done run the following command which will verify and generate all the files needed to continue.
-
-    ```sh
-    task configure
-    ```
-
-> [!IMPORTANT]
-> The configure task will create a `./ansible` directory and the following directories under `./kubernetes`.
-> ```sh
-> 📁 kubernetes      # Kubernetes cluster defined as code
-> ├─📁 bootstrap     # Flux installation (not tracked by Flux)
-> ├─📁 flux          # Main Flux configuration of repository
-> └─📁 apps          # Apps deployed into the cluster grouped by namespace
-> ```
-
-### ⚡ Stage 4: Prepare your nodes for k3s
-
-📍 _Here we will be running an Ansible playbook to prepare your nodes for running a Kubernetes cluster._
-
-1. Ensure you are able to SSH into your nodes from your workstation using a private SSH key **without a passphrase** (for example using a SSH agent). This lets Ansible interact with your nodes.
-
-2. Verify Ansible can view your config
-
-    ```sh
-    task ansible:list
-    ```
-
-3. Verify Ansible can ping your nodes
-
-    ```sh
-    task ansible:ping
-    ```
-
-4. Run the Ansible prepare playbook (nodes wil reboot when done)
-
-    ```sh
-    task ansible:prepare
-    ```
-
-### ⛵ Stage 5: Use Ansible to install k3s
-
-📍 _Here we will be running a Ansible Playbook to install [k3s](https://k3s.io/) with [this](https://galaxy.ansible.com/xanmanning/k3s) Ansible galaxy role. If you run into problems, you can run `task ansible:nuke` to destroy the k3s cluster and start over from this point._
-
-1. Verify Ansible can view your config
-
-    ```sh
-    task ansible:list
-    ```
-
-2. Verify Ansible can ping your nodes
-
-    ```sh
-    task ansible:ping
-    ```
-
-3. Install k3s with Ansible
-
-    ```sh
-    task ansible:install
-    ```
-
-4. Verify the nodes are online
-
-    📍 _If this command **fails** you likely haven't configured `direnv` as mentioned previously in the guide._
-
-    ```sh
-    kubectl get nodes -o wide
-    # NAME           STATUS   ROLES                       AGE     VERSION
-    # k8s-0          Ready    control-plane,etcd,master   1h      v1.27.3+k3s1
-    # k8s-1          Ready    worker                      1h      v1.27.3+k3s1
-    ```
-
-5. The `kubeconfig` for interacting with your cluster should have been created in the root of your repository.
-
-### 🔹 Stage 6: Install Flux in your cluster
-
-📍 _Here we will be installing [flux](https://fluxcd.io/flux/) after some quick bootstrap steps._
-
-1. Verify Flux can be installed
-
-    ```sh
-    flux check --pre
-    # ► checking prerequisites
-    # ✔ kubectl 1.27.3 >=1.18.0-0
-    # ✔ Kubernetes 1.27.3+k3s1 >=1.16.0-0
-    # ✔ prerequisites checks passed
-    ```
-
-2. Push you changes to git
-
-   📍 **Verify** all the `*.sops.yaml` and `*.sops.yaml` files under the `./ansible`, and `./kubernetes` directories are **encrypted** with SOPS
-
-    ```sh
-    git add -A
-    git commit -m "Initial commit :rocket:"
-    git push
-    ```
-
-3. Install Flux and sync the cluster to the Git repository
-
-    ```sh
-    task cluster:install
-    # namespace/flux-system configured
-    # customresourcedefinition.apiextensions.k8s.io/alerts.notification.toolkit.fluxcd.io created
-    # ...
-    ```
-
-4. Verify Flux components are running in the cluster
-
-    ```sh
-    kubectl -n flux-system get pods -o wide
-    # NAME                                       READY   STATUS    RESTARTS   AGE
-    # helm-controller-5bbd94c75-89sb4            1/1     Running   0          1h
-    # kustomize-controller-7b67b6b77d-nqc67      1/1     Running   0          1h
-    # notification-controller-7c46575844-k4bvr   1/1     Running   0          1h
-    # source-controller-7d6875bcb4-zqw9f         1/1     Running   0          1h
-    ```
-
-### 🎤 Verification Steps
-
-_Mic check, 1, 2_ - In a few moments applications should be lighting up like Christmas in July 🎄
-
-1. Output all the common resources in your cluster.
-
-    📍 _Feel free to use the provided [cluster tasks](.taskfiles/ClusterTasks.yaml) for validation of cluster resources or continue to get familiar with the `kubectl` and `flux` CLI tools._
-
-
-    ```sh
-    task cluster:resources
-    ```
-
-2. ⚠️ It might take `cert-manager` awhile to generate certificates, this is normal so be patient.
-
-3. 🏆 **Congratulations** if all goes smooth you will have a Kubernetes cluster managed by Flux and your Git repository is driving the state of your cluster.
-
-4. 🧠 Now it's time to pause and go get some motel motor oil ☕ and admire you made it this far!
-
-## 📣 Post installation
-
-#### 🌐 Public DNS
-
-The `external-dns` application created in the `networking` namespace will handle creating public DNS records. By default, `echo-server` and the `flux-webhook` are the only subdomains reachable from the public internet. In order to make additional applications public you must set set the correct ingress class name and ingress annotations like in the HelmRelease for `echo-server`.
-
-#### 🏠 Home DNS
-
-`k8s_gateway` will provide DNS resolution to external Kubernetes resources (i.e. points of entry to the cluster) from any device that uses your home DNS server. For this to work, your home DNS server must be configured to forward DNS queries for `${bootstrap_cloudflare_domain}` to `${bootstrap_k8s_gateway_addr}` instead of the upstream DNS server(s) it normally uses. This is a form of **split DNS** (aka split-horizon DNS / conditional forwarding).
-
-> [!TIP]
-> Below is how to configure a Pi-hole for split DNS. Other platforms should be similar.
-> 1. Apply this file on the Pihole server while substituting the variables
-> ```sh
-> # /etc/dnsmasq.d/99-k8s-gateway-forward.conf
-> server=/${bootstrap_cloudflare_domain}/${bootstrap_k8s_gateway_addr}
-> ```
-> 2. Restart dnsmasq on the server.
-> 3. Query an internal-only subdomain from your workstation (any `internal` class ingresses): `dig @${home-dns-server-ip} hubble.${bootstrap_cloudflare_domain}`. It should resolve to `${bootstrap_internal_ingress_addr}`.
-
-If you're having trouble with DNS be sure to check out these two GitHub discussions: [Internal DNS](https://github.com/onedr0p/flux-cluster-template/discussions/719) and [Pod DNS resolution broken](https://github.com/onedr0p/flux-cluster-template/discussions/635).
-
-... Nothing working? That is expected, this is DNS after all!
-
-#### 📜 Certificates
-
-By default this template will deploy a wildcard certificate using the Let's Encrypt **staging environment**, which prevents you from getting rate-limited by the Let's Encrypt production servers if your cluster doesn't deploy properly (for example due to a misconfiguration). Once you are sure you will keep the cluster up for more than a few hours be sure to switch to the production servers as outlined in `config.yaml`.
-
-📍 _You will need a production certificate to reach internet-exposed applications through `cloudflared`._
-
-#### 🪝 Github Webhook
-
-By default Flux will periodically check your git repository for changes. In order to have Flux reconcile on `git push` you must configure Github to send `push` events to Flux.
-
-> [!IMPORTANT]
-> This will only work after you have switched over certificates to the Let's Encrypt Production servers.
-
-1. Obtain the webhook path
-
-    📍 _Hook id and path should look like `/hook/12ebd1e363c641dc3c2e430ecf3cee2b3c7a5ac9e1234506f6f5f3ce1230e123`_
-
-    ```sh
-    kubectl -n flux-system get receiver github-receiver -o jsonpath='{.status.webhookPath}'
-    ```
-
-2. Piece together the full URL with the webhook path appended
-
-    ```text
-    https://flux-webhook.${bootstrap_cloudflare_domain}/hook/12ebd1e363c641dc3c2e430ecf3cee2b3c7a5ac9e1234506f6f5f3ce1230e123
-    ```
-
-3. Navigate to the settings of your repository on Github, under "Settings/Webhooks" press the "Add webhook" button. Fill in the webhook url and your `bootstrap_flux_github_webhook_token` secret and save.
-
-### 🤖 Renovate
-
-[Renovate](https://www.mend.io/renovate) is a tool that automates dependency management. It is designed to scan your repository around the clock and open PRs for out-of-date dependencies it finds. Common dependencies it can discover are Helm charts, container images, GitHub Actions, Ansible roles... even Flux itself! Merging a PR will cause Flux to apply the update to your cluster.
-
-To enable Renovate, click the 'Configure' button over at their [Github app page](https://github.com/apps/renovate) and select your repository. Renovate creates a "Dependency Dashboard" as an issue in your repository, giving an overview of the status of all updates. The dashboard has interactive checkboxes that let you do things like advance scheduling or reattempt update PRs you closed without merging.
-
-The base Renovate configuration in your repository can be viewed at [.github/renovate.json5](https://github.com/onedr0p/flux-cluster-template/blob/main/.github/renovate.json5). By default it is scheduled to be active with PRs every weekend, but you can [change the schedule to anything you want](https://docs.renovatebot.com/presets-schedule), or remove it if you want Renovate to open PRs right away.
-
-## 🐛 Debugging
-
-Below is a general guide on trying to debug an issue with an resource or application. For example, if a workload/resource is not showing up or a pod has started but in a `CrashLoopBackOff` or `Pending` state.
-
-1. Start by checking all Flux Kustomizations & Git Repository & OCI Repository and verify they are healthy.
-
-    ```sh
-    flux get sources oci -A
-    flux get sources git -A
-    flux get ks -A
-    ```
-
-2. Then check all the Flux Helm Releases and verify they are healthy.
-
-    ```sh
-    flux get hr -A
-    ```
-
-3. Then check the if the pod is present.
-
-    ```sh
-    kubectl -n <namespace> get pods -o wide
-    ```
-
-4. Then check the logs of the pod if its there.
-
-    ```sh
-    kubectl -n <namespace> logs <pod-name> -f
-    # or
-    stern -n <namespace> <fuzzy-name>
-    ```
-
-5. If a resource exists try to describe it to see what problems it might have.
-
-    ```sh
-    kubectl -n <namespace> describe <resource> <name>
-    ```
-
-6. Check the namespace events
-
-    ```sh
-    kubectl -n <namespace> get events --sort-by='.metadata.creationTimestamp'
-    ```
-
-Resolving problems that you have could take some tweaking of your YAML manifests in order to get things working, other times it could be a external factor like permissions on NFS. If you are unable to figure out your problem see the help section below.
-
-## 👉 Help
-
-- Make a post in this repository's Github [Discussions](https://github.com/onedr0p/flux-cluster-template/discussions).
-- Start a thread in the `#support` or `#flux-cluster-template` channels in the [Home Operations](https://discord.gg/home-operations) Discord server.
-
-## ❔ What's next
-
-The cluster is your oyster (or something like that). Below are some optional considerations you might want to review.
-
-#### Ship it
-
-To browse or get ideas on applications people are running, community member [@whazor](https://github.com/whazor) created [Kubesearch](https://kubesearch.dev) as a creative way to search Flux HelmReleases across Github and Gitlab.
-
-#### Storage
-
-The included CSI (democratic-csi in local-hostpath mode) is a great start for storage but soon you might find you need more features like replicated block storage, or to connect to a NFS/SMB/iSCSI server. If you need any of those features be sure to check out the projects like [rook-ceph](https://github.com/rook/rook), [longhorn](https://github.com/longhorn/longhorn), [openebs](https://github.com/openebs/openebs), [democratic-csi](https://github.com/democratic-csi/democratic-csi), [csi-driver-nfs](https://github.com/kubernetes-csi/csi-driver-nfs),
-and [synology-csi](https://github.com/SynologyOpenSource/synology-csi).
-
-#### Authenticate Flux over SSH
-
-Authenticating Flux to your git repository has a couple benefits like using a private git repository and/or using the Flux [Image Automation Controllers](https://fluxcd.io/docs/components/image/).
-
-By default this template only works on a public Github repository, it is advised to keep your repository public.
-
-The benefits of a public repository include:
-
-- Debugging or asking for help, you can provide a link to a resource you are having issues with.
-- Adding a topic to your repository of `kubesearch` to be included in the [Kubesearch](https://kubesearch.dev) results. This search helps people discover different configurations of Helm charts across others Flux based repositories.
-
-<details>
-  <summary>Expand to read guide on adding Flux SSH authentication</summary>
-
-1. Generate new SSH key:
-
-    ```sh
-    ssh-keygen -t ecdsa -b 521 -C "github-deploy-key" -f ./kubernetes/bootstrap/github-deploy.key -q -P ""
-    ```
-
-2. Paste public key in the deploy keys section of your repository settings
-3. Create sops secret in `./kubernetes/bootstrap/github-deploy-key.sops.yaml` with the contents of:
-
-   ```yaml
-   apiVersion: v1
-   kind: Secret
-   metadata:
-     name: github-deploy-key
-     namespace: flux-system
-   stringData:
-     # 3a. Contents of github-deploy-key
-     identity: |
-       -----BEGIN OPENSSH PRIVATE KEY-----
-           ...
-       -----END OPENSSH PRIVATE KEY-----
-     # 3b. Output of curl --silent https://api.github.com/meta | jq --raw-output '"github.com "+.ssh_keys[]'
-     known_hosts: |
-       github.com ssh-ed25519 ...
-       github.com ecdsa-sha2-nistp256 ...
-       github.com ssh-rsa ...
-   ```
-
-4. Encrypt secret:
-
-    ```sh
-    sops --encrypt --in-place ./kubernetes/bootstrap/github-deploy-key.sops.yaml
-    ```
-
-5. Apply secret to cluster:
-
-    ```sh
-    sops --decrypt ./kubernetes/bootstrap/github-deploy-key.sops.yaml | kubectl apply -f -
-    ```
-
-6. Update `./kubernetes/flux/config/cluster.yaml`:
-
-    ```yaml
-    apiVersion: source.toolkit.fluxcd.io/v1beta2
-    kind: GitRepository
-    metadata:
-      name: home-kubernetes
-      namespace: flux-system
-    spec:
-      interval: 10m
-      # 6a: Change this to your user and repo names
-      url: ssh://git@github.com/$user/$repo
-      ref:
-        branch: main
-      secretRef:
-        name: github-deploy-key
-    ```
-
-7. Commit and push changes
-8. Force flux to reconcile your changes
-
-    ```sh
-    flux reconcile -n flux-system kustomization cluster --with-source
-    ```
-
-9. Verify git repository is now using SSH:
-
-    ```sh
-    flux get sources git -A
-    ```
-
-10. Optionally set your repository to Private in your repository settings.
-
-</details>
-
-## 🤝 Thanks
-
-Big shout out to all the contributors, sponsors and everyone else who has helped on this project.
+See [LICENSE](./LICENSE)
