@@ -30,6 +30,8 @@ spec:
     - name: local-path-provisioner
       namespace: storage
   values:
+    annotations:
+      reloader.stakater.com/auto: "true"
     crds:
       enabled: true
     cleanPrometheusOperatorObjectNames: true
