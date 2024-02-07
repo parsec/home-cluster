@@ -109,9 +109,9 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 | [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments    | ~$180/yr       |
 | [NextDNS](https://nextdns.io/)                  | My router DNS server which includes AdBlocking                    | ~$20/yr        |
 | [Pushover](https://pushover.net/)               | Kubernetes Alerts and application notifications                   | $5 OTP         |
+|                                                 |                                                                   | Total: ~$60/mo |
 <!-- | [Terraform Cloud](https://www.terraform.io/)    | Storing Terraform state                                           | Free           | -->
 <!-- | [UptimeRobot](https://uptimerobot.com/)         | Monitoring internet connectivity and external facing applications | ~$60/yr        | -->
-|                                                 |                                                                   | Total: ~$60/mo |
 
 ---
 
