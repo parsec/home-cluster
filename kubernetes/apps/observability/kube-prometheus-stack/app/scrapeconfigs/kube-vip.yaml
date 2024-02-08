@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: kube-vip
+spec:
+  staticConfigs:
+    - targets:
+        - 10.1.0.20:2112
+        - 10.1.0.21:2112
+        - 10.1.0.22:2112
+  metricsPath: /metrics
