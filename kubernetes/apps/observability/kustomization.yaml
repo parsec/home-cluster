@@ -8,3 +8,4 @@ resources:
   - ./kubernetes-dashboard/ks.yaml
   - ./gatus/ks.yaml
   - ./loki/ks.yaml
+  - ./unpoller/ks.yaml
