@@ -112,7 +112,7 @@ spec:
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://thanos-query-frontend.observability.svc.cluster.local:9090
+            url: http://prometheus.observability.svc.cluster.local:9090
             # url: http://vmselect-victoria-metrics.observability.svc.cluster.local:8481/select/0/prometheus
             jsonData:
               prometheusType: Thanos # Prometheus for victoria-metrics
