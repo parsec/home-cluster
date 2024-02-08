@@ -8,5 +8,5 @@ resources:
   - ./sabnzbd/ks.yaml
   - ./prowlarr/ks.yaml
   - ./tautulli/ks.yaml
-  # - overseerr
+  - ./overseerr/ks.yaml
   - ./plex/ks.yaml
