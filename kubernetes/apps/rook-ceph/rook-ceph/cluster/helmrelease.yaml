@@ -70,6 +70,7 @@ spec:
       dashboard:
         enabled: true
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
+        alertmanagerEndpoint: http://alertmanager-operated.observability.svc.cluster.local:9093
         urlPrefix: /
         ssl: false
       storage:
