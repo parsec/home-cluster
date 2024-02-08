@@ -51,6 +51,14 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/default
+          - name: ceph
+            orgId: 1
+            folder: Ceph
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/ceph
           - name: flux
             orgId: 1
             folder: Flux
@@ -75,20 +83,46 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/nginx
+          - name: prometheus
+            orgId: 1
+            folder: Prometheus
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/prometheus
     datasources:
       datasources.yaml:
         apiVersion: 1
         deleteDatasources:
+          - { name: Alertmanager, orgId: 1 }
+          - { name: Loki, orgId: 1 }
           - { name: Prometheus, orgId: 1 }
         datasources:
           - name: Prometheus
             type: prometheus
             uid: prometheus
             access: proxy
-            url: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090
+            url: http://thanos-query-frontend.observability.svc.cluster.local:9090
+            # url: http://vmselect-victoria-metrics.observability.svc.cluster.local:8481/select/0/prometheus
             jsonData:
-              prometheusType: Prometheus
+              prometheusType: Thanos # Prometheus for victoria-metrics
             isDefault: true
+          - name: Loki
+            type: loki
+            uid: loki
+            access: proxy
+            url: http://loki-gateway.observability.svc.cluster.local
+            jsonData:
+              maxLines: 250
+          - name: Alertmanager
+            type: alertmanager
+            uid: alertmanager
+            access: proxy
+            url: http://alertmanager-operated.observability.svc.cluster.local:9093
+            # url: http://vmalertmanager-victoria-metrics.observability.svc.cluster.local:9093
+            jsonData:
+              implementation: prometheus
     dashboards:
       default:
         cloudflared:
@@ -107,6 +141,31 @@ spec:
           gnetId: 1860 # https://grafana.com/grafana/dashboards/1860?tab=revisions
           revision: 31
           datasource: Prometheus
+        cloudnative-pg:
+          url: https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/main/docs/src/samples/monitoring/grafana-dashboard.json
+          datasource: Prometheus
+        external-secrets:
+          url: https://raw.githubusercontent.com/external-secrets/external-secrets/main/docs/snippets/dashboard.json
+          datasource: Prometheus
+        node-feature-discovery:
+          url: https://raw.githubusercontent.com/kubernetes-sigs/node-feature-discovery/master/examples/grafana-dashboard.json
+          datasource: Prometheus
+      ceph:
+        ceph-cluster:
+          # renovate: depName="Ceph Cluster"
+          gnetId: 2842
+          revision: 17
+          datasource: Prometheus
+        ceph-osd:
+          # renovate: depName="Ceph - OSD (Single)"
+          gnetId: 5336
+          revision: 9
+          datasource: Prometheus
+        ceph-pools:
+          # renovate: depName="Ceph - Pools"
+          gnetId: 5342
+          revision: 9
+          datasource: Prometheus
       flux:
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/cluster.json
@@ -114,32 +173,58 @@ spec:
         flux-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/control-plane.json
           datasource: Prometheus
+        flux-logs:
+          url: https://raw.githubusercontent.com/fluxcd/flux2-monitoring-example/main/monitoring/configs/dashboards/logs.json
+          datasource: Prometheus
       kubernetes:
         kubernetes-api-server:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
+          # renovate: depName="Kubernetes / System / API Server"
+          gnetId: 15761
+          revision: 16
           datasource: Prometheus
         kubernetes-coredns:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
+          # renovate: depName="Kubernetes / System / CoreDNS"
+          gnetId: 15762
+          revision: 17
           datasource: Prometheus
         kubernetes-global:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+          # renovate: depName="Kubernetes / Views / Global"
+          gnetId: 15757
+          revision: 36
           datasource: Prometheus
         kubernetes-namespaces:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+          # renovate: depName="Kubernetes / Views / Namespaces"
+          gnetId: 15758
+          revision: 32
           datasource: Prometheus
         kubernetes-nodes:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+          # renovate: depName="Kubernetes / Views / Nodes"
+          gnetId: 15759
+          revision: 28
           datasource: Prometheus
         kubernetes-pods:
-          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
+          # renovate: depName="Kubernetes / Views / Pods"
+          gNetId: 15760
+          revision: 21
           datasource: Prometheus
-      nginx:
+        kubernetes-volumes:
+          # renovate: depName="K8s / Storage / Volumes / Cluster"
+          gnetId: 11454
+          revision: 14
+          datasource: Prometheus
         nginx:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-          datasource: Prometheus
-        nginx-request-handling-performance:
-          url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
-          datasource: Prometheus
+          nginx:
+            url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+            datasource: Prometheus
+          nginx-request-handling-performance:
+            url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/request-handling-performance.json
+            datasource: Prometheus
+        prometheus:
+          prometheus:
+            # renovate: depName="Prometheus"
+            gnetId: 19105
+            revision: 3
+            datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
@@ -154,6 +239,10 @@ spec:
         enabled: true
         searchNamespace: ALL
         labelValue: ""
+      plugins:
+        - grafana-clock-panel
+        - grafana-piechart-panel
+        - grafana-worldmap-panel
     serviceMonitor:
       enabled: true
     ingress:
