@@ -29,6 +29,10 @@ spec:
   dependsOn:
     - name: local-path-provisioner
       namespace: storage
+  valuesFrom:
+    - kind: ConfigMap
+      name: kube-state-metrics-configmap
+      valuesKey: kube-state-metrics.yaml
   values:
     annotations:
       reloader.stakater.com/auto: "true"
@@ -56,20 +60,6 @@ spec:
               resources:
                 requests:
                   storage: 1Gi
-    kube-state-metrics:
-      metricLabelsAllowlist:
-        - "deployments=[*]"
-        - "persistentvolumeclaims=[*]"
-        - "pods=[*]"
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              sourceLabels: ["__meta_kubernetes_pod_node_name"]
-              regex: ^(.*)$
-              replacement: $1
-              targetLabel: kubernetes_node
     kubelet:
       enabled: true
       serviceMonitor:
