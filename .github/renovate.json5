@@ -12,7 +12,6 @@
     ":timezone(America/New_York)",
     "github>parsec/home-cluster//.github/renovate/allowedVersions.json5",
     "github>parsec/home-cluster//.github/renovate/autoMerge.json5",
-    "github>parsec/home-cluster//.github/renovate/clusters.json5",
     "github>parsec/home-cluster//.github/renovate/commitMessage.json5",
     "github>parsec/home-cluster//.github/renovate/customManagers.json5",
     "github>parsec/home-cluster//.github/renovate/grafanaDashboards.json5",
