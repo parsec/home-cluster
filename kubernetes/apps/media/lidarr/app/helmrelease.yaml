@@ -109,7 +109,7 @@ spec:
             readOnly: false
       downloads:
         type: nfs
-        server: "192.168.9.10"
+        server: zodiark.parsec.sh
         path: /mnt/Data/media/downloads
         globalMounts:
           - path: /downloads
