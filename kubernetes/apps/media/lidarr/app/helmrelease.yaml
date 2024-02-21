@@ -1,0 +1,123 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+apiVersion: helm.toolkit.fluxcd.io/v2beta2
+kind: HelmRelease
+metadata:
+  name: &app lidarr
+  namespace: media
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 2.6.0
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          configmap.reloader.stakater.com/reload: "lidarr-pushover"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+              pullPolicy: IfNotPresent
+            envFrom: &envFrom
+              - secretRef:
+                  name: lidarr-secret
+        containers:
+          main:
+            image:
+              repository: ghcr.io/onedr0p/lidarr-develop
+              tag: 2.1.7.4030@sha256:01d40bb9a759a3be757a9af235a14dafcef131b5014a6a2f4a32075b5fa940c5
+            env:
+              TZ: "${TIMEZONE}"
+              LIDARR__INSTANCE_NAME: Lidarr
+              LIDARR__PORT: &port 8080
+              LIDARR__LOG_LEVEL: info
+              PUSHOVER_APP_URL: &host "{{ .Release.Name }}.parsec.sh"
+              PUSHOVER_PRIORITY: "0"
+            envFrom:
+              - secretRef:
+                  name: lidarr-secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 250Mi
+              limits:
+                memory: 2000Mi
+    service:
+      main:
+        ports:
+          http:
+            port: *port
+    ingress:
+      main:
+        enabled: true
+        className: "nginx"
+        annotations:
+          # nginx.ingress.kubernetes.io/auth-method: GET
+          # nginx.ingress.kubernetes.io/auth-url: http://authelia.default.svc.cluster.local.:8888/api/verify
+          # nginx.ingress.kubernetes.io/auth-signin: https://auth.${SECRET_CLUSTER_DOMAIN}?rm=$request_method
+          # nginx.ingress.kubernetes.io/auth-response-headers: Remote-User,Remote-Name,Remote-Groups,Remote-Email
+          # nginx.ingress.kubernetes.io/auth-snippet: proxy_set_header X-Forwarded-Method $request_method;
+          hajimari.io/icon: mdi:headphones
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                service:
+                  name: main
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        enabled: true
+        existingClaim: *app
+        globalMounts:
+          - path: /config
+      music:
+        type: nfs
+        server: zodiark.parsec.sh
+        path: /mnt/Data/media/audio
+        globalMounts:
+          - path: /music
+            readOnly: false
+      downloads:
+        type: nfs
+        server: "192.168.9.10"
+        path: /mnt/Data/media/downloads
+        globalMounts:
+          - path: /downloads
+      scripts:
+        type: configMap
+        name: lidarr-pushover
+        defaultMode: 0775
+        globalMounts:
+          - path: /scripts/pushover-notify.sh
+            subPath: pushover-notify.sh
+            readOnly: true
