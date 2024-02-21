@@ -105,7 +105,7 @@ spec:
         server: zodiark.parsec.sh
         path: /mnt/Data/media/downloads
         globalMounts:
-          - path: /downloads
+          - path: /media/downloads
       scripts:
         type: configMap
         name: lidarr-pushover
