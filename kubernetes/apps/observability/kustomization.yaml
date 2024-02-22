@@ -9,3 +9,4 @@ resources:
   - ./gatus/ks.yaml
   - ./loki/ks.yaml
   - ./unpoller/ks.yaml
+  - ./promtail/ks.yaml
