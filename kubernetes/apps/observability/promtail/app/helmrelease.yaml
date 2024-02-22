@@ -35,7 +35,7 @@ spec:
       registry: ghcr.io
       repository: k8s-at-home/promtail
     config:
-      lokiAddress: http://loki:3100/loki/api/v1/push
+      lokiAddress: http://:3100/loki.observability.svc.cluster.local/api/v1/push
       snippets:
         extraScrapeConfigs: |
           - job_name: syslog
