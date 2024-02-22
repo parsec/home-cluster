@@ -63,9 +63,7 @@ spec:
         name: syslog
         containerPort: 1514
         service:
-          type: LoadBalancer
-          externalIPs:
-          - "${SVC_SYSLOG_ADDR}"
+          type: ClusterIP
         externalTrafficPolicy: Local
     extraVolumes:
       - name: journal
