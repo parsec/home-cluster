@@ -198,8 +198,6 @@ spec:
             replicated:
               size: 3
           dataPool:
-            parameters:
-              min_size: 1
             failureDomain: host
             erasureCoded:
               dataChunks: 2
