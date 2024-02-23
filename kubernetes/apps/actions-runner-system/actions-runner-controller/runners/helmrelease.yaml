@@ -37,6 +37,8 @@ spec:
       name: actions-runner-controller-auth-secret
       valuesKey: ACTION_RUNNER_CONTROLLER_GITHUB_PRIVATE_KEY
   values:
+    annotations:
+      reloader.stakater.com/auto: "true"
     runnerScaleSetName: arc-runner-set-home-cluster
     githubConfigUrl: https://github.com/parsec/home-cluster
     minRunners: 1
