@@ -31,9 +31,6 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
-    image:
-      registry: ghcr.io
-      repository: k8s-at-home/promtail
     config:
       lokiAddress: http://loki.observability.svc.cluster.local:3100/api/v1/push
       snippets:
