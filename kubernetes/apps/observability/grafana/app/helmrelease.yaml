@@ -27,6 +27,7 @@ spec:
     - name: local-path-provisioner
       namespace: storage
   values:
+    autoMount: true
     extraInitContainers:
       - name: 01-init-db
         image: ghcr.io/onedr0p/postgres-init:16
