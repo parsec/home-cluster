@@ -31,3 +31,4 @@ resources:
   - ./rook-ceph.yaml
   - ./cloudnative-pg.yaml
   - ./redis-operator.yaml
+  - ./actions-runner-controller.yaml
