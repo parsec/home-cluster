@@ -126,7 +126,7 @@ spec:
             type: loki
             uid: loki
             access: proxy
-            url: http://loki:3100
+            url: http://loki-read.observability.svc.cluster.local:3100
             jsonData:
               maxLines: 250
           - name: Alertmanager
