@@ -92,6 +92,7 @@ spec:
           - name: hydaelyn
             devices:
               - name: /dev/disk/by-id/nvme-CT2000P1SSD8_20392AB1904B
+              - osdsPerDevice: "2"
       placement:
         mgr: &placement
           nodeAffinity:
