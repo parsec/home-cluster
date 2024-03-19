@@ -118,6 +118,7 @@ spec:
       enabled: true
       initialDelay: 5m
       backupInterval: 24h
+      pauseIfNoPlayers: true
       pruneBackupsDays: 3
       backupMethod: rclone
       rcloneRemote: zodiark
