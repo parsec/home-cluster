@@ -13,7 +13,7 @@
       runs-on: ["arc-runner-set-home-cluster"]
       strategy:
         matrix:
-          cluster: ["storage"]
+          cluster: ["default"]
       steps:
         - name: Generate Token
           uses: actions/create-github-app-token@v1
