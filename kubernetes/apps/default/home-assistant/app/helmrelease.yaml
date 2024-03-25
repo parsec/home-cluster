@@ -82,9 +82,7 @@ spec:
           - hosts: [*host]
     persistence:
       config:
-        type: persistentVolumeClaim
-        accessMode: "ReadWriteOnce"
-        size: 5Gi
+        existingClaim: home-assistant
       logs:
         type: emptyDir
         globalMounts:

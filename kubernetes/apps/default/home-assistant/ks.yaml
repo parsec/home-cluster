@@ -26,4 +26,3 @@ spec:
       APP: *app
       GATUS_SUBDOMAIN: hass
       VOLSYNC_CAPACITY: 5Gi
-      VOLSYNC_SOURCE_PVC: home-assistant-config
