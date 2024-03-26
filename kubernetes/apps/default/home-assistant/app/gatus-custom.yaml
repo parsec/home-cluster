@@ -16,7 +16,7 @@ data:
           hide-hostname: true
           hide-url: true
         dns:
-          query-name: hass.parsec.sh
+          query-name: homeassistant.parsec.sh
           query-type: A
         conditions:
           - "len([BODY]) == 0"
