@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.0.4
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -54,13 +54,14 @@ spec:
             runAsGroup: 568
             runAsNonRoot: true
     service:
-      main:
+      app:
+        controller: unpoller
         ports:
           http:
             port: 9130
     serviceMonitor:
-      main:
-        enabled: true
+      app:
+        serviceName: unpoller
         endpoints:
           - port: http
             scheme: http
