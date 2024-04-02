@@ -11,3 +11,16 @@ groups:
         annotations:
           app: "{{ $labels.app }}"
           summary: "{{ $labels.app }} is experiencing database issues"
+
+  - name: home-assistant
+    rules:
+      - alert: HomeAssistantPostgresUnreachable
+        expr: |
+          sum by (app) (count_over_time({app="home-assistant"} |~ "(?i)error in database connectivity"[2m])) > 0
+        for: 2m
+        labels:
+          severity: critical
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} is unable to connect to postgres"
