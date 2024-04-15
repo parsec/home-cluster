@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: itzg/minecraft-server
-      tag: java17-graalvm
+      tag: java17-jdk
       pullPolicy: IfNotPresent
     nodeSelector:
       org.democratic-csi.topology/node: "hydaelyn"
