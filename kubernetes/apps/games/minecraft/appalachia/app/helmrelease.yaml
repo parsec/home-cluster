@@ -78,7 +78,7 @@ spec:
       difficulty: normal
       pvp: true
       motd: "Welcome to Appalachia!"
-      woldSaveName: atm9
+      woldSaveName: appalachia
       autoCurseForge:
         apiKey:
           existingSecret: appalachia-secret
