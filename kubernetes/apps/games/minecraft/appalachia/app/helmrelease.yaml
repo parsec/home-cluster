@@ -60,7 +60,7 @@ spec:
       successThreshold: 1
       timeoutSeconds: 1
     startupProbe:
-      enabled: true
+      enabled: false
       failureThreshold: 30
       periodSeconds: 10
 
