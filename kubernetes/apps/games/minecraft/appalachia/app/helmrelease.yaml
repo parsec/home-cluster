@@ -85,7 +85,7 @@ spec:
           secretKey: CF_API_KEY
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/techrevolution/files/5242762"
       serviceType: LoadBalancer
-      servicePort: 25595
+      servicePort: 25565
       loadBalancerIP: 10.1.0.105
       rcon:
         enabled: true
