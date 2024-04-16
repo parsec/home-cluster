@@ -63,9 +63,6 @@ spec:
       enabled: true
       failureThreshold: 30
       periodSeconds: 10
-    extraEnv:
-      ENABLE_AUTOPAUSE: false
-      ENABLE_AUTOSTOP: false
 
     minecraftServer:
       eula: true
@@ -117,6 +114,8 @@ spec:
       ALLOW_FLIGHT: true
       GUI: false
       STOP_SERVER_ANNOUNCE_DELAY: 60
+      ENABLE_AUTOPAUSE: false
+      ENABLE_AUTOSTOP: false
     mcbackup:
       enabled: true
       initialDelay: 5m
