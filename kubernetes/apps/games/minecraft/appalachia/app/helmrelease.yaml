@@ -63,6 +63,9 @@ spec:
       enabled: true
       failureThreshold: 30
       periodSeconds: 10
+    extraEnv:
+      ENABLE_AUTOPAUSE: false
+      ENABLE_AUTOSTOP: false
 
     minecraftServer:
       eula: true
@@ -86,7 +89,7 @@ spec:
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/techrevolution/files/5242762"
       serviceType: LoadBalancer
       servicePort: 25595
-      loadBalancerIP: 10.1.0.104
+      loadBalancerIP: 10.1.0.105
       rcon:
         enabled: true
         port: 25575
