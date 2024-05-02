@@ -83,7 +83,7 @@ spec:
         apiKey:
           existingSecret: appalachia-secret
           secretKey: CF_API_KEY
-        pageUrl: "https://www.curseforge.com/minecraft/modpacks/techrevolution/files/5242762"
+        pageUrl: "https://www.curseforge.com/minecraft/modpacks/techrevolution/files/5307544"
       serviceType: LoadBalancer
       servicePort: 25565
       loadBalancerIP: 10.1.0.105
