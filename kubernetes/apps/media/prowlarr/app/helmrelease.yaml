@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
-apiVersion: helm.toolkit.fluxcd.io/v2beta2
+apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: prowlarr
@@ -40,7 +40,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/prowlarr-develop
-              tag: 1.16.1.4420@sha256:b92e309da6b8724671b8e52d6718cb7376131a8dedb2a79224d7eecb02fb68ae
+              tag: 1.17.2.4511@sha256:01dce2a9c0e29a2a5338a9457698ea3e027727bed6b9f0ab7ac4a259cafb991b
             env:
               # https://github.com/Radarr/Radarr/issues/7030#issuecomment-1039689518
               # https://github.com/dotnet/runtime/issues/9336
