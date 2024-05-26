@@ -124,7 +124,7 @@ spec:
         type: emptyDir
       media:
         type: nfs
-        server: zodiark.parsec.sh
+        server: 10.1.0.3
         path: /mnt/Data/media
         globalMounts:
           - path: /media
