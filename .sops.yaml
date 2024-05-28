@@ -14,5 +14,3 @@ creation_rules:
     key_groups:
       - age:
           - "age1p4p7e5rq80nxvp98nnmwah0rlppu9yp6xgqr5h6yer8cxrk46ass9w6yn7"
-  - encrypted_regex: '((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))'
-    pgp: >-
