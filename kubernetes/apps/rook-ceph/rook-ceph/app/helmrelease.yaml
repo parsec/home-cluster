@@ -21,6 +21,7 @@ spec:
   upgrade:
     cleanupOnFail: true
     remediation:
+      strategy: rollback
       retries: 3
   uninstall:
     keepHistory: false
@@ -29,8 +30,6 @@ spec:
       namespace: storage
   values:
     csi:
-      provisioner:
-        image: registry.k8s.io/sig-storage/csi-provisioner:v5.2.0
       cephFSKernelMountOptions: ms_mode=prefer-crc
       enableLiveness: true
       serviceMonitor:
