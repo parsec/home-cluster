@@ -31,7 +31,7 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app atm9
+  name: &app atm9-reloaded
   namespace: flux-system
 spec:
   targetNamespace: games
