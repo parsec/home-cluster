@@ -39,7 +39,7 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/plex-beta
-              tag: 1.40.3.8502-f4f0b17e1
+              tag: 1.41.3.9314-a0bfb8370
             env:
               TZ: America/New_York
               NVIDIA_DRIVER_CAPABILITIES: all
