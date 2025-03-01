@@ -56,11 +56,11 @@ spec:
       namespace: flux-system
     - name: external-secrets-stores
       namespace: flux-system
-  # healthCheckExprs:
-  #   - apiVersion: cert-manager.io/v1
-  #     kind: Certificate
-  #     failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
-  #     current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+  healthCheckExprs:
+    - apiVersion: cert-manager.io/v1
+      kind: Certificate
+      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
+      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
   interval: 1h
   path: ./kubernetes/apps/cert-manager/cert-manager/tls
   prune: true
