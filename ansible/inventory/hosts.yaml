@@ -6,14 +6,17 @@ kubernetes:
         venat:
           ansible_user: parsec
           ansible_host: 10.1.0.4
-        emet-selch:
-          ansible_user: parsec
-          ansible_host: 10.1.0.5
+        # emet-selch:
+        #   ansible_user: parsec
+        #   ansible_host: 10.1.0.5
         hythlodaeus:
           ansible_user: parsec
           ansible_host: 10.1.0.6
-    worker:
-      hosts:
         hydaelyn:
           ansible_user: parsec
           ansible_host: 10.1.0.7
+    # worker:
+    #   hosts:
+    #     hydaelyn:
+    #       ansible_user: parsec
+    #       ansible_host: 10.1.0.7
