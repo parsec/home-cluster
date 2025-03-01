@@ -97,13 +97,14 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
     service:
-      app:
+      main:
         controller: gatus
         ports:
           http:
             port: *port
     serviceMonitor:
-      app:
+      main:
+        enabled: true
         serviceName: gatus
         endpoints:
           - port: http
@@ -112,7 +113,8 @@ spec:
             interval: 1m
             scrapeTimeout: 10s
     ingress:
-      app:
+      main:
+        enabled: true
         className: external
         annotations:
           external-dns.alpha.kubernetes.io/target: external.parsec.sh
@@ -121,10 +123,11 @@ spec:
             paths:
               - path: /
                 service:
-                  identifier: app
-                  port: 80
+                  name: main
+                  port: http
         tls:
-          - hosts: [*host]
+          - hosts:
+            - *host
     serviceAccount:
       create: true
       name: gatus
