@@ -54,7 +54,7 @@ spec:
   dependsOn:
     - name: cert-manager
       namespace: flux-system
-    - name: onepassword
+    - name: external-secrets-stores
       namespace: external-secrets
   # healthCheckExprs:
   #   - apiVersion: cert-manager.io/v1
