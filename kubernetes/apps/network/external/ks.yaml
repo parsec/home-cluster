@@ -4,14 +4,14 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app external-cloudflared
-  namespace: &namespace network
+  namespace: &namespace flux-system
 spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
     - name: external-external-dns
-      namespace: network
+      namespace: flux-system
     - name: external-secrets-stores
       namespace: flux-system
   interval: 1h
@@ -31,7 +31,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app external-external-dns
-  namespace: &namespace network
+  namespace: &namespace flux-system
 spec:
   commonMetadata:
     labels:
@@ -56,7 +56,7 @@ apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: &app external-ingress-nginx
-  namespace: &namespace network
+  namespace: &namespace flux-system
 spec:
   commonMetadata:
     labels:
