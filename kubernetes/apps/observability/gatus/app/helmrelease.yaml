@@ -98,6 +98,10 @@ spec:
     ingress:
       app:
         className: external
+        annotations:
+          external-dns.alpha.kubernetes.io/target: status.parsec.sh
+          hajimari.io/icon: mdi:list-status
+          hajimari.io/appName: Gatus
         hosts:
           - host: status.parsec.sh
             paths:
