@@ -55,7 +55,7 @@ spec:
     - name: cert-manager
       namespace: flux-system
     - name: external-secrets-stores
-      namespace: external-secrets
+      namespace: flux-system
   # healthCheckExprs:
   #   - apiVersion: cert-manager.io/v1
   #     kind: Certificate
