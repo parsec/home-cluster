@@ -75,7 +75,7 @@ spec:
           namespaceSelector:
             any: true
       extraArgs:
-        default-ssl-certificate: cert-manager/parsec-sh-tls
+        default-ssl-certificate: flux-system/parsec-sh-tls
         publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
       publishService:
