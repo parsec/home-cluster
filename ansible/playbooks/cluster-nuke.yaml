@@ -55,6 +55,21 @@
             path: /etc/cni/net.d
             state: absent
 
+    - name: Config Directories
+      block:
+        - name: Config Directories | Delete /etc/ceph
+          ansible.builtin.file:
+            path: /etc/ceph
+            state: absent
+        - name: Config Directories | Delete /var/lib/rook
+          ansible.builtin.file:
+            path: /var/lib/rook
+            state: absent
+        - name: Config Directories | Delete /var/lib/rancher
+          ansible.builtin.file:
+            path: /var/lib/rancher
+            state: absent
+
     - name: Check to see if k3s-killall.sh exits
       ansible.builtin.stat:
         path: /usr/local/bin/k3s-killall.sh
