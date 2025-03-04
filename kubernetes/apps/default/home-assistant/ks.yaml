@@ -14,7 +14,8 @@ spec:
     - name: external-secrets-stores
   path: ./kubernetes/apps/default/home-assistant/app
   components:
-    - ../../../../components/gatus/guarded
+    - ../../../../components/gatus/external
+    - ../../../../components/volsync
   prune: true
   sourceRef:
     kind: GitRepository
