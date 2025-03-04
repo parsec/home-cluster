@@ -13,8 +13,8 @@ spec:
   path: ./kubernetes/apps/media/overseerr/app
   prune: true
   components:
-    - ../../../components/volsync
-    - ../../../components/gatus/external
+    - ../../../../components/volsync
+    - ../../../../components/gatus/external
   sourceRef:
     kind: GitRepository
     name: home-kubernetes

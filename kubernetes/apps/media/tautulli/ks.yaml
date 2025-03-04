@@ -12,8 +12,8 @@ spec:
       app.kubernetes.io/name: *app
   path: ./kubernetes/apps/media/tautulli/app
   components:
-    - ../../../components/gatus/guarded
-    - ../../../components/volsync
+    - ../../../../components/gatus/guarded
+    - ../../../../components/volsync
   prune: true
   sourceRef:
     kind: GitRepository

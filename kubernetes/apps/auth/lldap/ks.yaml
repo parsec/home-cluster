@@ -14,6 +14,8 @@ spec:
     - name: cloudnative-pg-cluster
     - name: external-secrets-stores
   path: ./kubernetes/apps/auth/lldap/app
+  components:
+    - ../../../components/gatus/guarded
   prune: true
   sourceRef:
     kind: GitRepository
