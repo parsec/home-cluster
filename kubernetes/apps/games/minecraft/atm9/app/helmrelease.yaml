@@ -86,7 +86,7 @@ spec:
         pageUrl: "https://www.curseforge.com/minecraft/modpacks/all-the-mods-9/files/6174211"
       serviceType: LoadBalancer
       servicePort: 25595
-      loadBalancerIP: 10.1.0.103
+      loadBalancerIP: 10.1.10.103
       rcon:
         enabled: true
         port: 25575
