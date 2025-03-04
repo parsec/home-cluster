@@ -29,7 +29,7 @@ spec:
       service:
         annotations:
           external-dns.alpha.kubernetes.io/hostname: &hostname external.parsec.sh
-          lbipam.cilium.io/ips: '10.1.0.21'
+          lbipam.cilium.io/ips: '10.1.10.20'
         externalTrafficPolicy: Cluster
       ingressClassResource:
         name: external
