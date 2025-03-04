@@ -3,12 +3,12 @@ originRequest:
   http2Origin: true
 
 ingress:
-  - hostname: "${SECRET_DOMAIN}"
+  - hostname: "parsec.sh"
     service: https://external-ingress-nginx-controller.flux-system.svc.cluster.local:443
     originRequest:
-      originServerName: "external.${SECRET_DOMAIN}"
-  - hostname: "*.${SECRET_DOMAIN}"
+      originServerName: "external.parsec.sh"
+  - hostname: "*.parsec.sh"
     service: https://external-ingress-nginx-controller.flux-system.svc.cluster.local:443
     originRequest:
-      originServerName: "external.${SECRET_DOMAIN}"
+      originServerName: "external.parsec.sh"
   - service: http_status:404
