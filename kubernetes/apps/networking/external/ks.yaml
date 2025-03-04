@@ -15,7 +15,7 @@ spec:
     - name: external-secrets-stores
       namespace: networking
   interval: 1h
-  path: ./kubernetes/apps/network/external/cloudflared
+  path: ./kubernetes/apps/networking/external/cloudflared
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -40,7 +40,7 @@ spec:
     - name: external-secrets-stores
       namespace: flux-system
   interval: 1h
-  path: ./kubernetes/apps/network/external/external-dns
+  path: ./kubernetes/apps/networking/external/external-dns
   prune: true
   retryInterval: 2m
   sourceRef:
@@ -65,7 +65,7 @@ spec:
     - name: cert-manager-tls
       namespace: flux-system
   interval: 1h
-  path: ./kubernetes/apps/network/external/ingress-nginx
+  path: ./kubernetes/apps/networking/external/ingress-nginx
   prune: true
   retryInterval: 2m
   sourceRef:
