@@ -1,8 +1,8 @@
 ---
 bpf:
   masquerade: true
-bgp:
-  enabled: false
+bgpcontrolplane:
+  enabled: true
 envoy:
   enabled: false
 cluster:
