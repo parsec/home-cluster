@@ -13,6 +13,8 @@ spec:
   dependsOn:
     - name: external-secrets-stores
   path: ./kubernetes/apps/default/home-assistant/app
+  components:
+    - ../../../../components/gatus/guarded
   prune: true
   sourceRef:
     kind: GitRepository
