@@ -40,7 +40,7 @@ spec:
       existingSecret: grafana-admin-secret
     env:
       GF_EXPLORE_ENABLED: true
-      GF_SERVER_ROOT_URL: "https://grafana.${SECRET_DOMAIN}"
+      GF_SERVER_ROOT_URL: "https://grafana.parsec.sh"
     envFromSecrets:
       - name: *secret
     grafana.ini:
@@ -290,7 +290,7 @@ spec:
       annotations:
         hajimari.io/icon: simple-icons:grafana
       hosts:
-        - &host "grafana.${SECRET_DOMAIN}"
+        - &host "grafana.parsec.sh"
       tls:
         - hosts:
             - *host

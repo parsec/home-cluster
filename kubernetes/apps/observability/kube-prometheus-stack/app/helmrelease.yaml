@@ -129,10 +129,10 @@ spec:
           hajimari.io/icon: simple-icons:prometheus
         pathType: Prefix
         hosts:
-          - "prometheus.${SECRET_DOMAIN}"
+          - "prometheus.parsec.sh"
         tls:
           - hosts:
-              - "prometheus.${SECRET_DOMAIN}"
+              - "prometheus.parsec.sh"
       prometheusSpec:
         replicas: 2
         replicaExternalLabelName: __replica__
