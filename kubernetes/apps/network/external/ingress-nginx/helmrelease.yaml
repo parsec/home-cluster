@@ -28,8 +28,9 @@ spec:
       replicaCount: 2
       service:
         annotations:
-          external-dns.alpha.kubernetes.io/hostname: &hostname external.parsec.sh
+          # external-dns.alpha.kubernetes.io/hostname: &hostname external.parsec.sh
           lbipam.cilium.io/ips: '10.42.0.3'
+        externalTrafficPolicy: Cluster
       ingressClassResource:
         name: external
         default: false
@@ -76,7 +77,7 @@ spec:
             any: true
       extraArgs:
         default-ssl-certificate: flux-system/parsec-sh-tls
-        publish-status-address: *hostname
+        # publish-status-address: *hostname
       terminationGracePeriodSeconds: 120
       publishService:
         enabled: false
