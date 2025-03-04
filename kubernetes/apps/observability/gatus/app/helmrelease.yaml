@@ -55,7 +55,6 @@ spec:
               TZ: America/New_York
               GATUS_CONFIG_PATH: /config
               GATUS_DELAY_START_SECONDS: 5
-              PORT: &port 80
             envFrom:
               - secretRef:
                   name: gatus-secret
@@ -66,7 +65,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: *port
+                    port: &port 8080
                   initialDelaySeconds: 30
                   periodSeconds: 30
                   timeoutSeconds: 1
