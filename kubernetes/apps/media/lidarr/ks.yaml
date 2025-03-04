@@ -15,6 +15,9 @@ spec:
     - name: rook-ceph-cluster
     - name: volsync
   path: ./kubernetes/apps/media/lidarr/app
+  components:
+    - ../../../components/gatus/guarded
+    - ../../../components/volsync
   prune: true
   sourceRef:
     kind: GitRepository

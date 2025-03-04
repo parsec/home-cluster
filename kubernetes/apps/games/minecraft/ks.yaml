@@ -42,8 +42,8 @@ spec:
     - name: external-secrets-stores
   path: ./kubernetes/apps/games/minecraft/atm9/app
   components:
-    - ../../../../../components/volsync
-    - ../../../../../components/gatus/external
+    - ../../../components/volsync
+    - ../../../components/gatus/external
   prune: true
   sourceRef:
     kind: GitRepository

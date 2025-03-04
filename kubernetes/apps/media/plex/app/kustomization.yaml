@@ -4,5 +4,3 @@ kind: Kustomization
 resources:
   # - ./pvc.yaml
   - ./helmrelease.yaml
-  - ../../../../components/volsync
-  - ../../../../components/gatus/external
