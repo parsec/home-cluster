@@ -1,7 +1,7 @@
 ---
 bpf:
   masquerade: true
-bgpcontrolplane:
+bgpControlPlane:
   enabled: true
 envoy:
   enabled: false
