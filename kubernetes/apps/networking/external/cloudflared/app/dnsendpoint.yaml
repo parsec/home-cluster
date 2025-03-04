@@ -7,4 +7,4 @@ spec:
   endpoints:
     - dnsName: "external.parsec.sh"
       recordType: CNAME
-      targets: ["${SECRET_CLOUDFLARE_TUNNEL_ID}.cfargotunnel.com"]
+      targets: ["29a5de74-37ae-4441-b762-474e61de26ba.cfargotunnel.com"]
