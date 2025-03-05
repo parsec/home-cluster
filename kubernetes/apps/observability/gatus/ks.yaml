@@ -15,8 +15,8 @@ spec:
   interval: 1h
   retryInterval: 2m
   path: ./kubernetes/apps/observability/gatus/app
-  components:
-    - ../../../../components/gatus/external
+  # components:
+  #   - ../../../../components/gatus/external
   postBuild:
     substitute:
       APP: *app
