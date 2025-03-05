@@ -19,6 +19,6 @@ data:
           query-name: hass.parsec.sh
           query-type: A
         conditions:
-          - "len([BODY]) == 0"
+          - "[STATUS] == 200"
         alerts:
           - type: pushover
